@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CarsRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CarsRepository;
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Cars
 {
     #[ORM\Id]
@@ -55,6 +57,28 @@ class Cars
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $options = null;
+
+    /**
+     * Permet d'intialiser le slug automatiquement si on ne le donne pas
+     *
+     * @return void
+     */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function initializeSlug(): void
+    {
+        if(empty($this->slug))
+        {
+            $slugify = new Slugify();
+            //slugifier la marque et le modèle pour créer un slug "combiné"
+            $brandSlug = $slugify->slugify($this->brand);
+            $modelSlug = $slugify->slugify($this->model);
+
+            $this->slug = $brandSlug . '-' . $modelSlug;
+        }
+    }
+
+
 
     public function getId(): ?int
     {
