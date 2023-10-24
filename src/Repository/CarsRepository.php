@@ -20,6 +20,20 @@ class CarsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Cars::class);
     }
+    /**
+     * Permet de récupérer les dernières voitures enregistrées
+     *
+     * @param [type] $limit
+     * @return void
+     */
+    public function findLatestCars($limit)
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC') 
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Cars[] Returns an array of Cars objects
