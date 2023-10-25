@@ -3,14 +3,70 @@
 namespace App\Controller;
 
 use App\Entity\Cars;
+use App\Form\CarType;
 use App\Repository\CarsRepository;
 use App\Service\PaginationService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CarController extends AbstractController
 {
+    #[Route("/cars/new", name:"cars_create")]
+    public function create(Request $request, EntityManagerInterface $manager): Response
+    {
+        $car= new Cars();
+        $form = $this->createForm(CarType::class, $car);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            // je persiste mon objet Ad
+            $manager->persist($car);
+            // j'envoie les persistances dans la bdd
+            $manager->flush();
+
+            $this->addFlash('success', "L'annonce <strong>".$car->getBrand().$car->getModel()."</strong> a bien été enregistrée");
+
+            return $this->redirectToRoute('cars_show',[
+                'slug' => $car->getSlug(),
+              
+            ]);
+
+        }
+        return $this->render("car/new.html.twig",[
+            'myForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Fonction permettant d'afficher les résultats de la recherche
+     *
+     * @param Request $request
+     * @param CarsRepository $carsRepository
+     * @return Response
+     */
+    #[Route("/cars/search", name: "cars_search")]
+    public function search(Request $request, CarsRepository $carsRepository): Response
+    {
+        $query = $request->query->get('q'); //récupère la recherche du repo
+
+        if ($query) {
+            $results = $carsRepository->searchByKeyword($query);  //si il y'a une recherche tu recherches sinon tu laisses le tableau vide
+        } else {
+            $results = [];
+          
+        }
+
+        return $this->render('car/search.html.twig', [
+            'query' => $query,
+            'results' => $results,
+         
+        ]);
+    }
     /**
      * Affiche toutes les marques 
      *
@@ -34,7 +90,7 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route('/cars/brands/{slugBrand}', name: 'cars_brand')]
-    public function brandCars(string $slugBrand, CarsRepository $carsRepository): Response
+    public function brandCars(string $slugBrand, CarsRepository $carsRepository,): Response
     {
         //remplace le string par des tirets pour obtenir le nom de la marque
         $brand = str_replace('-', ' ', $slugBrand);

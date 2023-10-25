@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+
+{% block title %}Ajout d'une Voiture{% endblock %}
+
+{# {% form_theme myForm 'bootstrap_5_layout.html.twig' %} #}
+
+{% block body %}
+    <div class="container">
+        <h1>Ajout d'une nouvelle Voiture</h1>
+
+        {{ form_start(myForm) }}
+
+
+            {# <h3>Avant form_widget</h3> #}
+
+            {# {{form_widget(myForm.title, {'attr': {'class':'form-control'}})}} #}
+
+            {# {{form_row(myForm.title)}} #}
+
+            {# <h3>après form_widget</h3> #}
+
+
+             {{form_widget(myForm)}}
+
+            <button type="submit" class="btn btn-primary mt-3">Ajout d'une Voiture</button>
+
+
+
+        {{ form_end(myForm) }}
+    </div>
+{% endblock %}

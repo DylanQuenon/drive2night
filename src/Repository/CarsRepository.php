@@ -58,6 +58,16 @@ class CarsRepository extends ServiceEntityRepository
 
         return $marquesAutorisees;
     }
+    public function searchByKeyword(string $keyword)
+    {
+        return $this->createQueryBuilder('c')
+        ->where('c.model LIKE :keyword OR c.brand LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 //    /**
 //     * @return Cars[] Returns an array of Cars objects
