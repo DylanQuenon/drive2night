@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des marques{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Liste des marques</h1>
+        <div class="d-flex flex-wrap">
+            {% for car in brands %}
+                <div class="col-md-4 mb-3">
+                    <ul style="list-style-type: disc; margin-left: 10px;">
+                        <li>
+                            <a href="{{ path('cars_brand', {'slugBrand': car.slugBrand}) }} " class="btn btn-danger text-white" style="color: blue;">{{ car.brand }}</a>
+                        </li>
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

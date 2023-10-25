@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{car.model}}{% endblock %}
+
+{% block body %}
+     <div class="annonce-title" style="background-image: url({{car.coverImage}})">
+        <div class="container">
+            <h1>{{car.model}}</h1>
+            
+            <p class="h2"><strong>{{car.price}} $ </strong> pour <strong>{{car.km}} km</strong></p>
+            <a href="#" class="btn btn-primary">Réserver</a>
+        </div>
+   </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                {{car.content | raw | nl2br}}
+
+              <div class="bd-example">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-indicators">
+                         {% for image in car.images %}
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+                        {% endfor %} 
+
+                        </div>
+                        <div class="carousel-inner">
+                            {% for image in car.images %}
+                                <div class="carousel-item carousel-item2 {% if loop.first %}active{% endif %}">
+                                    <img src="{{image.url}}" class="d-block w-100" alt="image de {{car.model}}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                         <h5>{{car.model}}</h5>
+                                        <p>{{image.caption}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+          
+
+
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+
+    {# pour récup ce qu'il y a dans le parent sur la base que l'on extends #}
+    {{parent()}}
+
+    <script>
+        console.log('je suis dans show.html.twig')
+    </script>
+
+{% endblock %}

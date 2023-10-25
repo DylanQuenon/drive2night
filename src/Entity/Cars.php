@@ -63,6 +63,9 @@ class Cars
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Image::class, orphanRemoval: true)]
     private Collection $images;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slugBrand = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -85,6 +88,17 @@ class Cars
             $modelSlug = $slugify->slugify($this->model);
 
             $this->slug = $brandSlug . '-' . $modelSlug;
+          
+        }
+        if(empty($this->slugBrand))
+        {
+            $slugify = new Slugify();
+            //slugifier la marque et le modèle pour créer un slug "combiné"
+            $slugBrand = $slugify->slugify($this->brand);
+   
+
+            $this->slugBrand = $slugBrand;
+          
         }
     }
 
@@ -289,6 +303,18 @@ class Cars
                 $image->setCar(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlugBrand(): ?string
+    {
+        return $this->slugBrand;
+    }
+
+    public function setSlugBrand(string $slugBrand): static
+    {
+        $this->slugBrand = $slugBrand;
 
         return $this;
     }

@@ -34,6 +34,30 @@ class CarsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    /**
+     * Fonction pour afficher toutes les marques
+     *
+     * @return void
+     */
+    public function MarquesAutorisees()
+    {
+        $qb = $this->createQueryBuilder('c')
+        ->orderBy('c.brand', 'ASC')
+        ->select('DISTINCT c.slugBrand,c.brand')
+        ->getQuery();
+
+        $results = $qb->getResult();
+
+        $marquesAutorisees = [];
+        foreach ($results as $result) {
+            $marquesAutorisees[] = [
+                'slugBrand' => $result['slugBrand'],
+                'brand' => $result['brand']
+            ];
+        }
+
+        return $marquesAutorisees;
+    }
 
 //    /**
 //     * @return Cars[] Returns an array of Cars objects

@@ -1,0 +1,15 @@
+ <div class="col-md-4 my-2">
+    <div class="card mb-4">
+    {% set url = path('cars_show', {'slug':car.slug}) %}
+        <img src="{{ car.coverImage }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+            <p class="card-text">
+                <strong>Mileage:</strong> {{ car.km|number_format(0, ',', '.') }} km<br>
+                <strong>Price:</strong> ${{ car.price|number_format(0, ',', '.') }}<br>
+                <strong>Year:</strong> {{ car.year }}<br>
+            </p>
+            <a href="{{url}}" class="btn btn-danger btn-block">Read more</a>
+        </div>
+    </div>
+</div>
