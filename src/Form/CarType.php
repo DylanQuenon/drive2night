@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Cars;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CarType extends AbstractType
 {
@@ -72,6 +74,11 @@ class CarType extends AbstractType
             ->add('slugBrand',TextType::class, $this->getConfiguration('Slug marque', 'Adresse web (automatique)',[
                 'required' => false
             ]))
+            ->add('images', CollectionType::class, [
+                'entry_type' => ImageType::class,
+                'allow_add' => true, // pour le data_prototype
+                'allow_delete' => true
+            ])
         ;
     }
 

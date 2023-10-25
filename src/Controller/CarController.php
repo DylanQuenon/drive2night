@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cars;
 use App\Form\CarType;
+use App\Entity\Image;
 use App\Repository\CarsRepository;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,6 +25,13 @@ class CarController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            foreach($car->getImages() as $image)
+            {
+                $image->setCar($car);
+                $manager->persist($image);
+            }
+
+
             // je persiste mon objet Ad
             $manager->persist($car);
             // j'envoie les persistances dans la bdd
