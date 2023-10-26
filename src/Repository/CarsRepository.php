@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Cars;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Cars>
@@ -60,13 +61,15 @@ class CarsRepository extends ServiceEntityRepository
     }
     public function searchByKeyword(string $keyword)
     {
+        $slugify = new Slugify();
+        $slugKeyword = $slugify->slugify($keyword);
+    
         return $this->createQueryBuilder('c')
-        ->where('c.model LIKE :keyword OR c.brand LIKE :keyword')
-            ->setParameter('keyword', '%' . $keyword . '%')
+            ->where('c.slug LIKE :slugKeyword')
+            ->setParameter('slugKeyword', '%' . $slugKeyword . '%')
             ->getQuery()
             ->getResult();
     }
-
 
 
 //    /**
