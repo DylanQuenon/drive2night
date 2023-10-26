@@ -5,9 +5,12 @@
 {% block body %}
     <div class="container full">
         <h1>Modification du profil</h1>
-        {{form_start(myForm)}}
-            {{form_widget(myForm)}}
+        <a href="{{ path('account_modifimg') }}" class="btn btn-primary">Modifier l'avatar</a>
+        {{ form_start(myForm) }}
+            {{ form_widget(myForm) }}
             <button type="submit" class="btn btn-warning">Enregistrer les modifications</button>
-        {{form_end(myForm)}}
+        {{ form_end(myForm) }}
+
+        {# Ajoutez un lien/bouton pour la modification de l'avatar #}
     </div>
 {% endblock %}

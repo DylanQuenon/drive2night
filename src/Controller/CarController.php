@@ -44,7 +44,7 @@ class CarController extends AbstractController
                 $image->setCar($car);
                 $manager->persist($image);
             }
-
+            $car->setAuthor($this->getUser());
 
             // je persiste mon objet Ad
             $manager->persist($car);
