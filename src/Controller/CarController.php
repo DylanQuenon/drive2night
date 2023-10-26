@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Cars;
 use App\Entity\Image;
 use App\Form\CarType;
+use DateTimeImmuable;
+use App\Entity\Comment;
+use App\Form\CommentType;
 use Cocur\Slugify\Slugify;
 use App\Repository\CarsRepository;
 use App\Service\PaginationService;
@@ -154,11 +158,31 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("/cars/{slug}", name:"cars_show")]
-    public function show(string $slug, Cars $car): Response
+    public function show(Request $request, string $slug, Cars $car, EntityManagerInterface $manager): Response
     {
-
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCar($car)
+                ->setAuthor($this->getUser());
+        
+            $manager->persist($comment);
+            $manager->flush();
+        
+            $this->addFlash(
+                'success',
+                'Votre commentaire a bien été pris en compte'
+            );
+        
+            // Rediriger vers la même page pour réinitialiser le formulaire
+            return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
+        }
+    
         return $this->render("car/show.html.twig", [
-            'car' => $car
+            'car' => $car,
+            'myForm' => $form->createView()
         ]);
     }
     

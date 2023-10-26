@@ -1,102 +1,88 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{car.model}}{% endblock %}
+{% block title %}{{ car.model }}{% endblock %}
 
 {% block body %}
-     <div class="annonce-title" style="background-image: url({{car.coverImage}})">
-        <div class="container">
-            <h1>{{car.model}}</h1>
-            
-            <p class="h2"><strong>{{car.price}} $ </strong> pour <strong>{{car.km}} km</strong></p>
-            <a href="#" class="btn btn-primary">Réserver</a>
-        </div>
-   </div>
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
-            <div class="col-md-8 mb-3">
-                {{car.content | raw | nl2br}}
-
-              <div class="bd-example">
-                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
-                        <div class="carousel-indicators">
-                         {% for image in car.images %}
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
-                        {% endfor %} 
-
-                        </div>
-                        <div class="carousel-inner">
-                            {% for image in car.images %}
-                                <div class="carousel-item carousel-item2 {% if loop.first %}active{% endif %}">
-                                    <img src="{{image.url}}" class="d-block w-100" alt="image de {{car.model}}">
-                                    <div class="carousel-caption d-none d-md-block">
-                                         <h5>{{car.model}}</h5>
-                                        <p>{{image.caption}}</p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+            <div class="col-lg-8">
+                <div class="annonce-title" style="background-image: url({{ car.coverImage }})">
+                    <div class="container">
+                        <h1 class="display-4">{{ car.model }}</h1>
+                        <p class="h2"><strong>{{ car.price }} $</strong> pour <strong>{{ car.km }} km</strong></p>
+                        <a href="#" class="btn btn-primary">Réserver</a>
                     </div>
                 </div>
 
+                {{ car.content | raw | nl2br }}
 
-            </div>
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% for image in car.images %}
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active" {% endif %}></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                        {% for image in car.images %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img src="{{ image.url }}" class="d-block w-100" alt="image de {{ car.model }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>{{ car.model }}</h5>
+                                    <p>{{ image.caption }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" ariahidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" ariahidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </a>
+                </div>
 
-          
-
-
-
-        </div>
-    </div>
-     {% if car.comments | length > 0 %}
-                    <h2 class="mb-3">Commentaire de nos locataires</h2>
+                {% if car.comments | length > 0 %}
+                    <h2 class="mt-4">Commentaires de nos locataires</h2>
                     <div class="alert alert-info">
-                        <h4 class="alert-hecaring text-center">
+                        <h4 class="alert-heading text-center">
                             <div class="row align-items-center">
                                 <div class="col">
                                     Note globale
                                 </div>
                                 <div class="col">
-                                    {# {% include "partials/rating.html.twig" with {'rating': car.avgRatings}%} #}
+                                    {{ car.getAvgRatings() }} / 5 <!-- Affiche la moyenne des notations -->
                                     <br>
-                                    <small>(cette moyenne est calculés sur {{car.comments | length }} avis)</small>
+                                    <small>(moyenne basée sur {{ car.comments | length }} avis)</small>
                                 </div>
                             </div>
                         </h4>
                     </div>
 
                     {% for comment in car.comments %}
-                        <div class="bg-light mb-3 p-3">
-                            <strong>{{comment.author.firstName}}</strong> a dit: 
-                            <blockquote>
-                                {{comment.content | raw | nl2br }}
-                            </blockquote>
-                            <strong>Note donnée: </strong>
+                        <div class="bg-light mb-4 p-3">
+                            <strong>{{ comment.author.firstName }} a dit :</strong>
+                            <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
+                            <strong>Note donnée :</strong>
                             {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
                         </div>
                     {% endfor %}
-
                 {% else %}
-                    <h2>Cette annonce n'a pas encore reçu de commentaire...</h2>
+                    <h2 class="mt-4">Cette annonce n'a pas encore reçu de commentaire...</h2>
                 {% endif %}
-{% endblock %}
+            </div>
 
-
-{% block javascripts %}
-
-    {# pour récup ce qu'il y a dans le parent sur la base que l'on extends #}
-    {{parent()}}
-
-    <script>
-        console.log('je suis dans show.html.twig')
-    </script>
-
+            <div class="col-lg-4">
+                <h4 class="mt-3">Vous avez un commentaire ?</h4>
+                {% if app.user %}
+                    {{ form_start(myForm) }}
+                    <button type="submit" class="btn btn-success mt-2">Ajouter un commentaire</button>
+                    {{ form_end(myForm) }}
+                {% else %}
+                    <p class="alert alert-info">Veuillez vous connecter pour ajouter un commentaire.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

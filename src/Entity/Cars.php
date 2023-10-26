@@ -346,6 +346,23 @@ class Cars
 
         return $this;
     }
+     /**
+     * Permet de récup la note d'une annonce
+     *
+     * @return integer
+     */
+    public function getAvgRatings(): int 
+    {
+        // calculer la sommes des notations
+        // fonction array_reduce - permet réduire le tableau à une saule valeur (attention il faut un tableau pas une array Collection, pour la transformation on va utiliser toArray() - 2ème paramètre c'est la foonction pour chaque valeur, le 3ème valeur par défaut)
+        $sum = array_reduce($this->comments->toArray(), function($total, $comment){
+            return $total + $comment->getRating();
+        },0);
+
+        // faire la division pour avoir la moyenne (ternaire)
+        if(count($this->comments) > 0) return $moyennne = round($sum / count($this->comments));
+        return 0;
+    }
 
     /**
      * @return Collection<int, Comment>

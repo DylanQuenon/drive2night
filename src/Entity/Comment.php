@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
     #[ORM\Id]
@@ -37,6 +38,19 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
+    /**
+     * Permet de mettre en place la date de création automatiquement
+     *
+     * @return void
+     */
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        if(empty($this->createAt))
+        {
+            $this->createAt = new \DateTimeImmutable();
+        }
+    }
     public function getId(): ?int
     {
         return $this->id;
