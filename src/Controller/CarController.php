@@ -26,6 +26,12 @@ class CarController extends AbstractController
     #[Route("/cars/new", name:"cars_create")]
     public function create(Request $request, EntityManagerInterface $manager): Response
     {
+        $user = $this->getUser();
+
+    if (!$user) {
+        $this->addFlash('warning', "Vous devez être connecté pour créer une annonce.");
+        return $this->redirectToRoute('account_login'); // Redirige vers la page de connexion
+    }
         $car= new Cars();
         $form = $this->createForm(CarType::class, $car);
 
@@ -169,6 +175,11 @@ class CarController extends AbstractController
     {
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
+         if ($this->getUser() !== $car->getAuthor()) {
+        // Redirige l'utilisateur vers une page d'erreur ou affiche un message d'erreur
+        $this->addFlash('warning', "Vous n'avez pas la permission de modifier cette annonce.");
+        return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
+    }
 
 
         if($form->isSubmitted() && $form->isValid())

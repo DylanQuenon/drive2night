@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Cars;
 use App\Form\ImageType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,24 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class CarType extends AbstractType
+class CarType extends ApplicationType
 {
-    private function getConfiguration(string $label, string $placeholder, array $options = []): array
-    {
-        $configuration = [
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder,
-            ],
-        ];
     
-        // Vérifiez si des options supplémentaires ont été fournies
-        if (!empty($options)) {
-            $configuration = array_merge_recursive($configuration, $options);
-        }
-    
-        return $configuration;
-    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
