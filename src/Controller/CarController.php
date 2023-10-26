@@ -15,6 +15,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CarController extends AbstractController
 {
+    /**
+     * Permet de créer une voiture 
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route("/cars/new", name:"cars_create")]
     public function create(Request $request, EntityManagerInterface $manager): Response
     {

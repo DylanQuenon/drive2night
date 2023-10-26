@@ -8,9 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CarsRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields:['model'], message:"Une autre voiture possède déjà ce model, merci de la modifier")]
 class Cars
 {
     #[ORM\Id]
@@ -19,15 +22,18 @@ class Cars
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 1, max: 255, minMessage:"Le modèle doit faire plus de 1 caractère", maxMessage: "Le modèle ne doit pas faire plus de 255 caractères")]
     private ?string $model = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 3, max: 255, minMessage:"La marque doit faire plus de 3 caractères", maxMessage: "La marque ne doit pas faire plus de 255 caractères")]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message: "Il faut une URL valide")]
     private ?string $coverImage = null;
 
     #[ORM\Column]
@@ -49,6 +55,7 @@ class Cars
     private ?string $fuel = null;
 
     #[ORM\Column]
+    #[Assert\Range(min: 2000, max: 2023, notInRangeMessage: "L'année d'origine de votre voiture doit être comprise entre 2000 et 2023")]
     private ?int $year = null;
 
     #[ORM\Column(length: 255)]
@@ -61,6 +68,7 @@ class Cars
     private ?string $options = null;
 
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: Image::class, orphanRemoval: true)]
+    #[Assert\Valid()]
     private Collection $images;
 
     #[ORM\Column(length: 255)]
