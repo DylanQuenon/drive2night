@@ -154,4 +154,53 @@ class CarController extends AbstractController
             'car' => $car
         ]);
     }
+    
+    /**
+     * Permet d'éditier une annonce
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param Ad $ad
+     * @return Response
+     */
+    #[Route("/cars/{slug}/edit", name:"cars_edit")]
+    public function edit(Request $request, EntityManagerInterface $manager, Cars $car): Response
+    {
+        $form = $this->createForm(CarType::class, $car);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+            // si je veux que le slug soit automatique 
+            // $ad->setSlug("");
+
+              // gestion des images 
+              foreach($car->getImages() as $image)
+              {
+                  $image->setCar($car);
+                  $manager->persist($image);
+              }
+
+              $manager->persist($car);
+              $manager->flush();
+
+              $this->addFlash(
+                'success',
+                "La voiture <strong>".$car->getBrand().$car->getModel()."</strong> a bien été modifiée!"
+              );
+
+              return $this->redirectToRoute('cars_show',[
+                'slug' => $car->getSlug()
+              ]);
+
+        }
+
+        return $this->render("car/edit.html.twig", [
+            "car" => $car,
+            "myForm" => $form->createView()
+        ]);
+    }
+
+
 }
