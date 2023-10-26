@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Form\PasswordUpdateType;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,6 +77,25 @@ class AccountController extends AbstractController
         // partie traitement du formulaire
         if($form->isSubmitted() && $form->isValid())
         {
+            // gestion de l'image
+            $file = $form['picture']->getData();
+            if(!empty($file))
+            {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename."-".uniqid().'.'.$file->guessExtension();
+                try{
+                    $file->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                }catch(FileException $e)
+                {
+                    return $e->getMessage();
+                }
+                $user->setPicture($newFilename);
+
+            }
             // gestion de l'inscription dans la bdd
             $hash = $hasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hash);
@@ -103,10 +125,18 @@ class AccountController extends AbstractController
         // Vérifie si un utilisateur est connecté
         if ($this->getUser()) {
             $user = $this->getUser(); // permet de récupérer l'utilisateur connecté
+            $fileName = $user->getPicture();
+            if(!empty($fileName)){
+                $user->setPicture(
+                    new File($this->getParameter('uploads_directory').'/'.$user->getPicture())
+                );
+            }
             $form = $this->createForm(AccountType::class, $user);
             $form->handleRequest($request);
     
             if ($form->isSubmitted() && $form->isValid()) {
+                $user->setSlug('')
+                ->setPicture($fileName);
                 $manager->persist($user);
                 $manager->flush();
     
@@ -124,5 +154,51 @@ class AccountController extends AbstractController
             $this->addFlash('warning', "Vous devez être connecté pour accéder à votre profil.");
             return $this->redirectToRoute('account_login'); // Redirige vers la page de connexion
         }
+    }
+        /**
+     * Permet de modifier le mot de passe
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordHasherInterface $hasher
+     * @return Response
+     */
+    #[Route("/account/password-update", name:"account_password")]
+    public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
+    {
+        $passwordUpdate = new PasswordUpdate();
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            // vérifier si le mot de passe correspond à l'ancien
+            if(!password_verify($passwordUpdate->getOldPassword(),$user->getPassword()))
+            {
+                // gestion de l'erreur
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel"));
+            }else{
+                $newPassword = $passwordUpdate->getNewPassword();
+                $hash = $hasher->hashPassword($user, $newPassword);
+
+                $user->setPassword($hash);
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Votre mot de passe a bien été modifié'
+                );
+
+                return $this->redirectToRoute('homepage');
+            }
+
+        }
+
+        return $this->render("account/password.html.twig", [
+            'myForm' => $form->createView()
+        ]);
+
     }
 }
