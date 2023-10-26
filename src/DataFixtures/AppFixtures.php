@@ -4,18 +4,54 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Cars;
+use App\Entity\User;
 use App\Entity\Image;
 use Cocur\Slugify\Slugify;
 use Faker\Provider\Fakecar;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         $faker->addProvider(new Fakecar($faker)); // Appel au faker de voiture
+         // gestion des utilisateurs 
+         $users = []; // init d'un tableau pour récup des user pour les voitures
+         $genres = ['male','femelle'];
+ 
+         for($u=1 ; $u <= 10; $u++)
+         {
+             $user = new User();
+             $genre = $faker->randomElement($genres);
+             $picture = 'https://picsum.photos/seed/picsum/500/500';
+ 
+             $hash = $this->passwordHasher->hashPassword($user, 'password');
+           
+             $user->setFirstName($faker->firstName($genre))
+                 ->setLastName($faker->lastName())
+                 ->setEmail($faker->email())
+                 ->setIntroduction($faker->sentence())
+                 ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+                 ->setPassword($hash)
+                 ->setPicture($picture);
+                
+              
+ 
+             $manager->persist($user); 
+             $users[] = $user;   
+ 
+            // ajouter un user au tableau (pour les voitures)
+ 
+         }
       
         // Tableau d'images pour les distribuer aléatoirement
         $carImages = [];
@@ -29,6 +65,7 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 25; $i++) {
             $randomImage = $carImages[array_rand($carImages)]; // Récupère aléatoirement une image du tableau
             $cars = new Cars();
+            $user = $users[rand(0, count($users)-1)];
             $cars->setModel($faker->vehicleModel)
                 ->setBrand($faker->vehicleBrand)
                 ->setCoverImage($randomImage)
@@ -41,7 +78,8 @@ class AppFixtures extends Fixture
                 ->setYear(rand(2000, 2023))
                 ->setTransmission($faker->vehicleGearBoxType)
                 ->setContent('<p>' . join('</p><p>', $faker->paragraphs(2)) . '</p>')
-                ->setOptions('<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p');
+                ->setOptions('<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p')
+                ->setAuthor($user);
                 // Gestion de la galerie image de la voiture
                 for($g=1; $g <= rand(2,5); $g++)
                 {

@@ -74,6 +74,10 @@ class Cars
     #[ORM\Column(length: 255)]
     private ?string $slugBrand = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -323,6 +327,18 @@ class Cars
     public function setSlugBrand(string $slugBrand): static
     {
         $this->slugBrand = $slugBrand;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

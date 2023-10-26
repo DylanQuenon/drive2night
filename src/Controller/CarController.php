@@ -173,10 +173,12 @@ class CarController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            //je reslugify la marque au cas où elle change
             $newBrand = $car->getBrand();
             $slugify = new Slugify();
             $newSlugBrand = $slugify->slugify($newBrand);
-            $newCarSlug = $newSlugBrand . '-' . $car->getModel(); // Assurez-vous que getModelSlug() retourne le slug du modèle de la voiture
+            $carSlug = $newSlugBrand .' '.$car->getModel();
+            $newCarSlug = $slugify->slugify($carSlug); 
             $car->setSlug($newCarSlug);
             $car->setSlugBrand($newSlugBrand);
             
