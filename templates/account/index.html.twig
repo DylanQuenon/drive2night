@@ -13,6 +13,11 @@
                         Une erreur est survenue, le nom d'utilisateur ou le mot de passe est invalide
                     </div>
                 {% endif %}
+                  {% if loginError %}
+                    <div class="alert alert-danger">
+                        {{ loginError }}
+                    </div>
+                {% endif %}
                 <form action="{{path('account_login')}}" method="POST">
                     <div class="form-group my-2">
                          {# Symfony veut un name précis pour le login : _username #}
