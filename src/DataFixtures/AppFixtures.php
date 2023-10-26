@@ -6,6 +6,8 @@ use Faker\Factory;
 use App\Entity\Cars;
 use App\Entity\User;
 use App\Entity\Image;
+use DateTimeImmutable;
+use App\Entity\Comment;
 use Cocur\Slugify\Slugify;
 use Faker\Provider\Fakecar;
 use Doctrine\Persistence\ObjectManager;
@@ -88,6 +90,18 @@ class AppFixtures extends Fixture
                         ->setCaption($faker->sentence())
                         ->setCar($cars);
                     $manager->persist($image);    
+                }
+                for ($b = 1; $b <= rand(0, 10); $b++) {
+                    $createAt = $faker->dateTimeBetween('-6 months', "-4 months");
+                    $createdAt = new DateTimeImmutable($createAt->format('Y-m-d'));
+                    // Gestion des commentaires
+                    $comment = new Comment();
+                    $comment->setContent($faker->paragraph())
+                        ->setRating(rand(1, 5))
+                        ->setAuthor($user)
+                        ->setCar($cars)
+                        ->setCreateAt($createdAt);
+                    $manager->persist($comment);
                 }
 
 
