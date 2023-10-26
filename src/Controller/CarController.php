@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Cars;
-use App\Form\CarType;
 use App\Entity\Image;
+use App\Form\CarType;
+use Cocur\Slugify\Slugify;
 use App\Repository\CarsRepository;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -169,30 +170,33 @@ class CarController extends AbstractController
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
 
+
         if($form->isSubmitted() && $form->isValid())
         {
+            $newBrand = $car->getBrand();
+            $slugify = new Slugify();
+            $newSlugBrand = $slugify->slugify($newBrand);
+            $newCarSlug = $newSlugBrand . '-' . $car->getModel(); // Assurez-vous que getModelSlug() retourne le slug du modèle de la voiture
+            $car->setSlug($newCarSlug);
+            $car->setSlugBrand($newSlugBrand);
+            
+            foreach($car->getImages() as $image)
+            {
+                $image->setCar($car);
+                $manager->persist($image);
+            }
 
-            // si je veux que le slug soit automatique 
-            // $ad->setSlug("");
+            $manager->persist($car);
+            $manager->flush();
 
-              // gestion des images 
-              foreach($car->getImages() as $image)
-              {
-                  $image->setCar($car);
-                  $manager->persist($image);
-              }
+            $this->addFlash(
+            'success',
+            "La voiture <strong>".$car->getBrand().$car->getModel()."</strong> a bien été modifiée!"
+            );
 
-              $manager->persist($car);
-              $manager->flush();
-
-              $this->addFlash(
-                'success',
-                "La voiture <strong>".$car->getBrand().$car->getModel()."</strong> a bien été modifiée!"
-              );
-
-              return $this->redirectToRoute('cars_show',[
-                'slug' => $car->getSlug()
-              ]);
+            return $this->redirectToRoute('cars_show',[
+            'slug' => $car->getSlug()
+            ]);
 
         }
 
@@ -200,6 +204,27 @@ class CarController extends AbstractController
             "car" => $car,
             "myForm" => $form->createView()
         ]);
+    }
+
+    /**
+     * Permet d'effacer une voiture
+     *
+     * @param Cars $car
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route("/cars/{slug}/delete", name:"cars_delete")]
+    public function delete(Cars $car, EntityManagerInterface $manager): Response
+    {
+        $this->addFlash(
+            'success',
+            "La voiture <strong>".$car->getBrand().$car->getModel()."</strong> a bien été supprimée"
+        );
+
+        $manager->remove($car);
+        $manager->flush();
+
+        return $this->redirectToRoute('cars_index');
     }
 
 
