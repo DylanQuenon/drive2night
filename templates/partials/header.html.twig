@@ -29,7 +29,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Mon compte  
-                        <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/default.jpg') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 30px; height: 30px;">
+                        <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/default.jpg') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 30px; height: 30px; object-fit:cover;">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li>
