@@ -165,6 +165,26 @@ class CarController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->getUser() === $car->getAuthor()) {
+                $this->addFlash(
+                    'warning',
+                    'Vous ne pouvez pas commenter votre propre voiture.'
+                );
+                return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
+            }
+    
+            $existingComment = $manager->getRepository(Comment::class)->findOneBy([
+                'car' => $car,
+                'author' => $this->getUser(),
+            ]);
+    
+            if ($existingComment) {
+                $this->addFlash(
+                    'warning',
+                    'Vous avez déjà commenté cette voiture. Seul un commentaire par voiture est autorisé.'
+                );
+                return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
+            }
             $comment->setCar($car)
                 ->setAuthor($this->getUser());
         
@@ -263,6 +283,20 @@ class CarController extends AbstractController
 
         return $this->redirectToRoute('cars_index');
     }
-
+   #[Route("/comment/{id}/delete", name: "comment_delete")]
+    public function deleteComment(Comment $comment, EntityManagerInterface $manager): Response
+    {
+        // Vérifier si l'utilisateur connecté est l'auteur du commentaire
+        if ($comment->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', "Vous n'êtes pas autorisé à supprimer ce commentaire.");
+            return $this->redirectToRoute('cars_show', ['slug' => $comment->getCar()->getSlug()]);
+        }
+    
+        $manager->remove($comment);
+        $manager->flush();
+    
+        $this->addFlash('success', "Le commentaire a été supprimé avec succès.");
+        return $this->redirectToRoute('user_profile');
+    }
 
 }

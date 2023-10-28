@@ -23,12 +23,26 @@ use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthentication
 
 class AccountController extends AbstractController
 {
-    private $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage)
+    #[Route('/profile', name: 'user_profile')]
+    public function userProfile(): Response
     {
-        $this->tokenStorage = $tokenStorage;
+        $user = $this->getUser(); // Récupérer l'utilisateur connecté
+
+        if ($user) {
+            $userCars = $user->getCars(); // Supposons que getCars() récupère les voitures de l'utilisateur depuis votre système
+            $userComments = $user->getComments(); // Supposons que getComments() récupère les commentaires de l'utilisateur
+
+            return $this->render('account/viewProfile.html.twig', [
+                'user' => $user,
+                'userCars' => $userCars,
+                'userComments' => $userComments
+            ]);
+        } else {
+            $this->addFlash('warning', 'Vous devez être connecté pour accéder à votre profil.');
+            return $this->redirectToRoute('login'); // Rediriger vers la page de connexion
+        }
     }
+
     /**
      * Permet de se connecter
      *
@@ -45,7 +59,7 @@ class AccountController extends AbstractController
 
         if($error instanceof TooManyLoginAttemptsAuthenticationException)
         {
-            // l'ereur est due à la limitation de tentative de connexion
+            // l'erreur est due à la limitation de tentative de connexion
             $loginError = "Trop de tentatives de connexion. Réessayez plus tard";
         }
 
@@ -295,6 +309,8 @@ class AccountController extends AbstractController
             'myForm' => $form->createView()
         ]);
     }
+   
+    
     
 
 }

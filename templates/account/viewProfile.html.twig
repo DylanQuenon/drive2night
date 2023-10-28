@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil Utilisateur{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Profil de {{ user.firstName }}</h1>
+        <div class="mt-4">
+            <h2>Voitures postées</h2>
+
+            {% for car in userCars %}
+                <div class="row">
+                    <div class="col">
+                        {% include "/car/partials/cards.html.twig" %}
+                    </div>
+                    <div class="d-flex">
+                        <a href="{{ path('cars_edit', { 'slug': car.slug }) }}" class="btn btn-primary  mb-3 mr-3">Modifier</a>
+                        <a href="{{ path('cars_delete', { 'slug': car.slug }) }}" class="btn btn-danger  mb-3 mx-3">Supprimer</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="mt-4">
+            <h2>Commentaires</h2>
+            {% for comment in userComments %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Vous avez dit sur {{ comment.car.brand }} {{ comment.car.model }}:</h5>
+                        <p class="card-text">{{ comment.content | raw | nl2br }}</p>
+                        <p><strong>Note donnée :</strong></p>
+                        {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-between">
+               <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger" data-method="POST">Supprimer le commentaire</a>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
