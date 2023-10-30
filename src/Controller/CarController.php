@@ -122,7 +122,7 @@ class CarController extends AbstractController
         $brand = str_replace('-', ' ', $slugBrand);
         
         // Récupère les voitures associées au nom de la marque
-        $cars = $carsRepository->findBy(['brand' => $brand]);
+        $cars = $carsRepository->findBy(['brand' => $brand]); //permet de sélectionner les voitures à la marque 
         
         return $this->render('car/brands.html.twig', [
             'brand' => $brand, //récupère la marque
@@ -139,33 +139,40 @@ class CarController extends AbstractController
      * @param PaginationService $pagination
      * @return Response
      */
-    #[Route('/cars/{page<\d+>?1}', name: 'cars_index')]
+
+     //regex pour la pagination, il va prendre le paramètre page qui doit contenir un chiffre entre 0 et 9, si il n'ya rien la valeur par défaut sera 1
+    #[Route('/cars/{page<\d+>?1}', name: 'cars_index')] 
     public function index(CarsRepository $repo,$page,PaginationService $pagination): Response
     {
-        $pagination->setEntityClass(Cars::class)
-                    ->setPage($page)
-                    ->setLimit(9);
+        
+      
+        $pagination->setEntityClass(Cars::class)//Définit l'entité pour la pagination
+                    ->setPage($page)//calculer le nombre de page (paramètre renvoyé dans l'url)
+                    ->setLimit(9);//la limite par page sera de 9
         return $this->render('car/index.html.twig', [
-            'pagination' => $pagination
+            'pagination' => $pagination //on renvoie les éléments à paginer
         ]);
         
     }
+    
     /**
-     * Affiche les voitures individuellement
+     * Récupère la voiture individuelle et va afficher et traiter le form pour ajouter un commentaire
      *
+     * @param Request $request
      * @param string $slug
      * @param Cars $car
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[Route("/cars/{slug}", name:"cars_show")]
     public function show(Request $request, string $slug, Cars $car, EntityManagerInterface $manager): Response
     {
-        $comment = new Comment();
+        $comment = new Comment(); //créé un nouveau commentaire
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Vérifier si l'utilisateur essaie de commenter sa propre voiture
+            // Vérifie si l'utilisateur essaie de commenter sa propre voiture
             if ($this->getUser() === $car->getAuthor()) {
                 $this->addFlash(
                     'warning',
@@ -174,7 +181,7 @@ class CarController extends AbstractController
                 return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
             }
     
-            // Vérifier s'il existe déjà un commentaire pour cette voiture par cet utilisateur
+            // Vérifie s'il existe déjà un commentaire pour cette voiture par cet utilisateur
             $existingComment = $manager->getRepository(Comment::class)->findOneBy([
                 'car' => $car,
                 'author' => $this->getUser(),
@@ -188,8 +195,8 @@ class CarController extends AbstractController
                 return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
             }
     
-            $comment->setCar($car)
-                    ->setAuthor($this->getUser());
+            $comment->setCar($car) //récupère la voiture commentée
+                    ->setAuthor($this->getUser());//récupère l'auteur qui a commenté
     
             // Persister le commentaire
             $manager->persist($comment);
@@ -205,17 +212,18 @@ class CarController extends AbstractController
         }
     
         return $this->render("car/show.html.twig", [
-            'car' => $car,
-            'myForm' => $form->createView()
+            'car' => $car, //récupère la voiture en question
+            'myForm' => $form->createView() //récup le formulaire pour les commentaires
         ]);
     }
     
+   
     /**
-     * Permet d'éditier une annonce
+     * Modifier une voiture
      *
      * @param Request $request
      * @param EntityManagerInterface $manager
-     * @param Ad $ad
+     * @param Cars $car
      * @return Response
      */
     #[Route("/cars/{slug}/edit", name:"cars_edit")]
@@ -224,7 +232,7 @@ class CarController extends AbstractController
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
          if ($this->getUser() !== $car->getAuthor()) {
-        // Redirige l'utilisateur vers une page d'erreur ou affiche un message d'erreur
+        // Redirige l'utilisateur vers une page d'erreur ou affiche un message d'erreur si c'est pas son annonce
         $this->addFlash('warning', "Vous n'avez pas la permission de modifier cette annonce.");
         return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
     }

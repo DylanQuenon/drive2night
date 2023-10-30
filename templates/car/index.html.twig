@@ -1,16 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CarController!{% endblock %}
+{% block title %}Cars{% endblock %}
 
 {% block body %}
+
 <div class="container">
+    <h2>All cars</h2>
     <div class="row">
-        {% for car in pagination.data %}
-        
-         {% include "/car/partials/cards.html.twig" %}
+        {% for car in pagination.data %} {# recup les datas de la pagination#}
+            {% include "/car/partials/cards.html.twig" %} {# Externalisation du code pour afficher les cartes pour limiter les répétitions#}
         {% endfor %}
-          <div class="pagination">
-            {{ pagination.display() }}
+        <div class="pagination">
+            {{ pagination.display() }} {# Appelle le display de la pagination (configuré dans service yaml)#}
         </div>
     </div>
 </div>

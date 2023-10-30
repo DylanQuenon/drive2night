@@ -1,5 +1,6 @@
 <?php 
-
+//un service est une classe réutilisable et bien définie qui effectue des tâches spécifiques 
+//ou fournit des fonctionnalités dans une application. 
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +31,7 @@ class PaginationService{
     private int $currentPage = 1;
 
     /**
-     * Le manager de Doctrine qui va nous permettre de trouver le repository
+     * Le manager de Doctrine permettant de trouver le repo
      *
      * @var EntityManagerInterface
      */
@@ -59,7 +60,7 @@ class PaginationService{
 
     /**
      * Constructeur du service de pagination 
-     * N'oubliez pas de configuer votre fichier service.yaml afin que Symfony sache quelle valeur utiliser pour le templatePath
+     * ATTENTION CHANGER fichier service.yaml afin que Symfony sache quelle valeur utiliser pour le templatePath
      * 
      * @param EntityManagerInterface $manager
      * @param Environment $twig
@@ -118,6 +119,7 @@ class PaginationService{
     {
         return $this->limit;
     }
+    
 
     /**
      * Permet de spécifier la page qui est actuellement affichée
@@ -150,7 +152,7 @@ class PaginationService{
     {   
         if(empty($this->entityClass))
         {
-            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer! Utilisez la méthode setEntityClass() de votre objet PaginationService");
+            throw new \Exception("L'entité sur laquelle nous devons paginer n'est pas définie! Utilisez la méthode setEntityClass() de votre objet PaginationService");
         }
         // calculer l'offset
         $offset =  $this->currentPage * $this->limit - $this->limit;
@@ -169,13 +171,13 @@ class PaginationService{
     {
         if(empty($this->entityClass))
         {
-            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer! Utilisez la méthode setEntityClass() de votre objet PaginationService");
+            throw new \Exception("L'entité sur laquelle nous devons paginer n'est pas définie! Utilisez la méthode setEntityClass() de votre objet PaginationService");
         }
-        $total = count($this->manager
+        $total = count($this->manager //calcul du nombre d'éléments à paginer
                         ->getRepository($this->entityClass)
                         ->findAll());
     
-        return ceil($total / $this->limit);
+        return ceil($total / $this->limit); // Calcul du nombre total de pages
     }
 
     /**

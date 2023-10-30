@@ -27,13 +27,13 @@ class CarsRepository extends ServiceEntityRepository
      * @param [type] $limit
      * @return void
      */
-    public function findLatestCars($limit)
+    public function findLatestCars($limit) //associe à un paramètre à la fonction
     {
-        return $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c') //permet d'écrire des requetes
             ->orderBy('c.id', 'DESC') 
             ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+            ->getQuery()// Obtenir la requête construite
+            ->getResult();// Exécuter la requête et obtenir les résultats
     }
     /**
      * Fonction pour afficher toutes les marques

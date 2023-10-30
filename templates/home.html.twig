@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue{% endblock %}
+{% block title %} Welcome {% endblock %}
 
 {% block body %}
     <div class="slides" id="home">
@@ -12,7 +12,6 @@
                         <p>Your dream car awaits at our garage, where excellence meets elegance. Find your perfect ride today.</p>
                         <div class="btn-home">
                             <a href="/cars/brands" class="button_anim">Explore our brands   <i class="fa-solid fa-arrow-right"></i></a>
-                          
                         </div>
                         <div class="social-media">
                             <i class="fa-brands fa-instagram"></i>
@@ -27,66 +26,60 @@
                     <img src="https://www.tonaletalk.com/cdn-cgi/image/format=auto,onerror=redirect,width=1920,height=1920,fit=scale-down/https://www.tonaletalk.com/attachments/alfa_romeo_tonale_rosso_alfa-png.104/" alt="Image d'une voiture">
                     </div>
                 </div>
+
             </div>
-        
         </div>
     </div>
-   <div id="bandeau">
-      <div class="scene">
+    <div id="bandeau">
+        <div class="scene">
         <div class="element" delta-x="-38">
-          <h2 class="elem-in">Our Latest cars</h2>
+            <h2 class="elem-in">Our Latest cars</h2>
         </div>
     </div>
 
-<div class="bd-example d-flex flex-column align-items-center justify-content-center" id="carouss" >        
-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+    <div class="bd-example d-flex flex-column align-items-center justify-content-center" id="carouss">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
             <div class="carousel-indicators">
                 {% for car in cars %}
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{ loop.index }}"></button>
                 {% endfor %}
             </div>
             <div class="carousel-inner">
-            <div class="wrapper">
-
-            
-            </div>
+                <div class="wrapper">
+                </div>
                 {% for car in cars %}
-                    <div class="carousel-item {% if loop.first %}active{% endif %}">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="d-flex flex-column align-items-center justify-content-center h-100" id="carousel_cap">
-                                    <h5>{{ car.brand }} {{ car.model }}</h5>
-                                    <div class="block-details">
-                                        <div class="details-line">
-                                            <div class="icon">
-                                              <i class="fa-solid fa-gauge"></i>
-                                            </div>
-                                                <p><strong>Mileage:</strong> <br>{{ car.km|number_format(0, ',', '.') }} km</p>
-                                        
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column align-items-center justify-content-center h-100" id="carousel_cap">
+                                <h5>{{ car.brand }} {{ car.model }}</h5>
+                                <div class="block-details">
+                                    <div class="details-line">
+                                        <div class="icon">
+                                            <i class="fa-solid fa-gauge"></i>
                                         </div>
-                                        <div class="details-line">
-                                            <div class="icon">
-                                                <i class="fa-solid fa-hand-holding-dollar"></i>
-                                            </div>
-                                                <p><strong>Price:</strong> <br> $. {{ car.price|number_format(0, ',', '.') }}</p>
-                                        
-                                        </div>
-                                        <div class="details-line">
-                                            <div class="icon">
-                                               <i class="fa-solid fa-calendar-days"></i>
-                                            </div>
-                                            <p><strong>Year:</strong> <br> {{ car.year }}</p>
-            
-                                        </div>
+                                        <p><strong>Mileage:</strong> <br>{{ car.km|number_format(0, ',', '.') }} km</p> {# Fonction permettant de formatter un nombre et y inclure les séparateurs de décimal et les séparateur de milliers #}
                                     </div>
-                                  
+                                    <div class="details-line">
+                                        <div class="icon">
+                                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                                        </div>
+                                        <p><strong>Price:</strong> <br> $. {{ car.price|number_format(0, ',', '.') }}</p>
+                                    </div>
+                                    <div class="details-line">
+                                        <div class="icon">
+                                            <i class="fa-solid fa-calendar-days"></i>
+                                        </div>
+                                        <p><strong>Year:</strong> <br> {{ car.year }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <img src="{{ car.coverImage }}" class="d-block w-100" alt="Image de {{ car.brand }} {{ car.model }}">
-                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ car.coverImage }}" class="d-block w-100 img_carouss" alt="Image de {{ car.brand }} {{ car.model }}">
                         </div>
                     </div>
+                </div>
                 {% endfor %}
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -98,51 +91,14 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    </div>
-  
-
-  </div>
-  
-  <!-- Ajoutez autant de logos que vous le souhaitez -->
 </div>
+
+
+    </div>
 
 
 
 {% endblock %}
 {% block javascripts %}
-<script>
-  const scenes = document.querySelectorAll('.scene');
-    scenes.forEach(scene => {
-      const elements = scene.querySelectorAll('.element');
-      const transitionDelay = 100; // Délai en millisecondes entre les dates
-  
-      const moveElements = (percent) => {
-        elements.forEach((element, elementIndex) => {
-          
-          if(element.getAttribute('delta-x')){
-            const deltaX = parseFloat(element.getAttribute('delta-x'));
-            element.style.transform = `translateX(${deltaX * percent * 3}vw)`;
-          }
 
-          if(element.getAttribute('data-transi')){
-            const transit = parseFloat(element.getAttribute('data-transi'));
-            // console.log(percent,transit)
-            const opacity = (percent>=transit)? 1 : 0;
-            element.style.opacity = opacity;
-          }
-
-        
-       
-        });
-      };
-  
-      document.addEventListener('scroll', () => {
-        const start = (window.scrollY + window.innerHeight) - scene.offsetTop;
-        const length = window.innerHeight + scene.offsetHeight;
-        const percent = Math.max(0, Math.min(1, start / length));
-        moveElements(percent);
-        // console.log(percent)
-      });
-    });
-</script>
 {% endblock %}
