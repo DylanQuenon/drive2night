@@ -5,6 +5,11 @@
 {% block body %}
     <div class="container">
         <h1>Profil de {{ user.firstName }}</h1>
+         <div>
+                <a href="{{ path('account_modifimg') }}" class="btn btn-success mr-2">Modifier l'avatar</a>
+                <a href="{{ path('account_profile') }}" class="btn btn-info mr-2">Modifier le profil</a>
+                <a href="{{ path('cars_create') }}" class="btn btn-danger">Ajouter une nouvelle voiture</a>
+            </div>
         <div class="mt-4">
             <h2>Voitures postées</h2>
 

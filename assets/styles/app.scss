@@ -466,3 +466,11 @@ background-color: $red !important;
 
 
 }
+.card-img, .card-img-bottom, .card-img-top {
+    width: 414px !important;
+    height: 100%;
+    object-fit: contain !important;
+  }
+  .card-car{
+    height: 475px !important;
+  }

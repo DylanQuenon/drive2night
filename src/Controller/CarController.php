@@ -165,6 +165,7 @@ class CarController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            // Vérifier si l'utilisateur essaie de commenter sa propre voiture
             if ($this->getUser() === $car->getAuthor()) {
                 $this->addFlash(
                     'warning',
@@ -173,6 +174,7 @@ class CarController extends AbstractController
                 return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
             }
     
+            // Vérifier s'il existe déjà un commentaire pour cette voiture par cet utilisateur
             $existingComment = $manager->getRepository(Comment::class)->findOneBy([
                 'car' => $car,
                 'author' => $this->getUser(),
@@ -185,17 +187,19 @@ class CarController extends AbstractController
                 );
                 return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
             }
+    
             $comment->setCar($car)
-                ->setAuthor($this->getUser());
-        
+                    ->setAuthor($this->getUser());
+    
+            // Persister le commentaire
             $manager->persist($comment);
             $manager->flush();
-        
+    
             $this->addFlash(
                 'success',
                 'Votre commentaire a bien été pris en compte'
             );
-        
+    
             // Rediriger vers la même page pour réinitialiser le formulaire
             return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
         }

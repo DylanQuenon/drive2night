@@ -10,5 +10,8 @@
             {{form_widget(myForm)}}
             <button type="submit" class='btn btn-warning'>Confirmez la modification de l'avatar</button>
         {{form_end(myForm)}}
+          {% if app.user.picture is not empty %}
+            <a href="{{ path('account_delimg') }}" class="btn btn-danger my-2">Supprimer avatar</a>
+          {% endif %}
     </div>
 {% endblock %} 

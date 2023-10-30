@@ -29,16 +29,19 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Mon compte  
-                        <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/default.jpg') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 30px; height: 30px; object-fit:cover;">
+                        <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 30px; height: 30px; object-fit:cover;">
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li>
-                                <a class="dropdown-item" href="{{ path('account_profile') }}">Modifier mon compte</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ path('account_logout') }}">Déconnexion</a>
-                            </li>
-                        </ul>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('account_profile') }}">Modifier mon compte</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('user_profile') }}">Voir le profil</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ path('account_logout') }}">Déconnexion</a>
+                        </li>
+                    </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">

@@ -32,7 +32,10 @@
                 <p><strong>Km: <br></strong> {{ car.km | number_format(0, '.', ' ') }} km</p>
             </div>
         </div>
-        <p>{{ car.content | raw | nl2br }}</p>
+        <h2 class="my-3">Description</h2>
+        <p class="my-3">{{ car.content | raw | nl2br }}</p>
+        <h2 class="my-3">Options</h2>
+        <p class="my-3">{{ car.options | raw | nl2br }}</p>
     </div>
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" style="max-height: 400px">
         <div class="carousel-indicators">
