@@ -36,7 +36,7 @@ class CarType extends ApplicationType
             ->add('coverImage',UrlType::class, $this->getConfiguration("Url de l'image ", "Donnez l'url de l'image"))
             ->add('km', IntegerType::class, $this->getConfiguration('Km', 'Inscrivez le kilométrage de la voiture'))
             ->add('price', MoneyType::class, $this->getConfiguration('Prix', 'Inscrivez le prix de la voiture'))
-            ->add('owners', IntegerType::class, $this->getConfiguration('Km', 'Inscrivez le nombre de propriétaires'))
+            ->add('owners', IntegerType::class, $this->getConfiguration('Propriétaires', 'Inscrivez le nombre de propriétaires'))
             ->add('cylinder',IntegerType::class, $this->getConfiguration('Cylindrée', "Saisissez la cylindrée (par exemple, 1.6L)"))
             ->add('power',IntegerType::class, $this->getConfiguration('Puissance', "Saisissez la puissance de la voiture"))
             ->add('fuel', ChoiceType::class, $this->getConfiguration("Fuel", "Choisissez le carburant", [

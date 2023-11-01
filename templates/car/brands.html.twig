@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Voitures de la marque {{brand}}{% endblock %}
+{% block title %}{{brand}}-Cars{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Voitures de la marque {{brand}}</h1>
+        <h1>{{brand}}-cars</h1>
     
         <div class="row">
             {% for car in cars %}

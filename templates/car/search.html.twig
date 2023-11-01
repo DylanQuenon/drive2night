@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats de la recherche{% endblock %}
+{% block title %}Search results{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Résultats de la recherche</h1>
+        <h1>Search results</h1>
     
         <form method="get" action="{{ path('cars_search') }}" class="mb-4">
             <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Rechercher..." value="{{ query }}">
+                <input type="text" name="q" class="form-control" placeholder="Search..." value="{{ query }}">
                 <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </div>
         </form>
@@ -18,7 +18,7 @@
         {% if query is not empty %} {# Si la requête n'est pas vide, afficher les résultats #}
           
                 {% set carsCount = results|length %} {# Compter le nombre de résultats #}
-                <h2>Voitures ({{ carsCount }} résultat{{ carsCount > 1 ? 's' : '' }})</h2> {#Si résultat est supérieur à un on ajoute s à résultat sinon on laisse comme ca
+                <h2>Car ({{ carsCount }} résultat{{ carsCount > 1 ? 's' : '' }})</h2> {#Si résultat est supérieur à un on ajoute s à résultat sinon on laisse comme ca
             #}
                 {% for car in results %}
                     {% include "/car/partials/cards.html.twig" %}
@@ -26,7 +26,7 @@
          
             
             {% if carsCount == 0 %} {# Si aucun résultat n'est trouvé, afficher "Aucun résultat trouvé" #}
-                <p>Aucun résultat trouvé</p>
+                <p>No results found</p>
             {% endif %}
         {% endif %}
     </div>
