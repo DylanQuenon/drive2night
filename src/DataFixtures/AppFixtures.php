@@ -29,6 +29,18 @@ class AppFixtures extends Fixture
          // gestion des utilisateurs 
          $users = []; // init d'un tableau pour récup des user pour les voitures
          $genres = ['male','femelle'];
+           // création d'un admin
+        $admin = new User();
+        $admin->setFirstName('Dylan')
+            ->setLastName('Quenon')
+            ->setEmail('dylan@epse.be')
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'epse'))
+            ->setIntroduction($faker->sentence())
+            ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setPicture('');
+
+        $manager->persist($admin);
  
          for($u=1 ; $u <= 10; $u++)
          {

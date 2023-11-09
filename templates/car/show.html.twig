@@ -15,6 +15,10 @@
             <p class="price">${{ car.price | number_format(0, '.', ' ') }}</p>
         </div>
         <div class="wrapper">
+         {% if (app.user and app.user == car.author) or is_granted('ROLE_ADMIN') %}
+              <a href="{{path('cars_edit', {'slug':car.slug})}}" class="btn btn-warning m-2">Edit the car</a>
+                <a href="{{path('cars_delete', {'slug':car.slug})}}" class="btn btn-danger m-2">Delete the car</a>
+            {% endif %}
             <div class="row-info d-flex justify-content-between flex-wrap">
                 <!-- Informations spécifiques à la voiture -->
                 <div class="block">
@@ -72,7 +76,7 @@
                     <h4 class="alert-heading text-center">
                         <div class="row align-items-center">
                             <div class="col">
-                                Note globale
+                               Overall Rating
                             </div>
                             <div class="col">
                                 {{ car.getAvgRatings() }} / 5 <!-- Affiche la moyenne des notations -->
@@ -89,6 +93,10 @@
                         <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
                         <strong>Note donnée :</strong>
                         {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
+                                    {% if (app.user and app.user == car.author) or is_granted('ROLE_ADMIN') %}
+                <a href="{{path('comment_delete', {'id':comment.id})}}" class="btn btn-danger m-2">Delete comment</a>
+     
+            {% endif %}
                     </div>
                 {% endfor %}
             {% else %}
@@ -102,7 +110,9 @@
                     {{ form_start(myForm) }}
                     {{ form_widget(myForm) }}
                     <button type="submit" class="btn btn-danger mt-2">add a comment</button>
+                    
                     {{ form_end(myForm) }}
+           
                 {% else %}
                     <p class="alert alert-info">Please login to add a comment.</p>
                 {% endif %}
@@ -112,7 +122,8 @@
         <p>
             <strong>
                 <a href="{{ path('user_show', {'slug': car.author.slug}) }}">{{ car.author.fullName }}</a>
-                <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+                <img src="{{ car.author.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+
             </strong>
         </p>
         </div>

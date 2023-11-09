@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -125,11 +126,12 @@ class AccountController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route("/account/profile", name:"account_profile")]
     public function profile(Request $request, EntityManagerInterface $manager): Response
     {
         // Vérifie si un utilisateur est connecté
-        if ($this->getUser()) {
+     
             $user = $this->getUser(); // permet de récupérer l'utilisateur connecté
             $fileName = $user->getPicture();
             if(!empty($fileName)){
@@ -155,11 +157,7 @@ class AccountController extends AbstractController
             return $this->render("account/profile.html.twig", [
                 'myForm' => $form->createView()
             ]);
-        } else {
-            // Redirige l'utilisateur vers la page de connexion ou affiche un message d'erreur
-            $this->addFlash('warning', "Vous devez être connecté pour accéder à votre profil.");
-            return $this->redirectToRoute('account_login'); // Redirige vers la page de connexion
-        }
+       
     }
         /**
      * Permet de modifier le mot de passe
@@ -169,6 +167,7 @@ class AccountController extends AbstractController
      * @param UserPasswordHasherInterface $hasher
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route("/account/password-update", name:"account_password")]
     public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
@@ -213,6 +212,7 @@ class AccountController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route("/account/delimg", name:"account_delimg")]
     public function removeImg(EntityManagerInterface $manager): Response
     {
@@ -240,6 +240,7 @@ class AccountController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route("/account/imgmodify", name:"account_modifimg")]
     public function imgModify(Request $request, EntityManagerInterface $manager): Response
     {
