@@ -117,6 +117,16 @@ class Cars
           
         }
     }
+        /**
+     * Permet d'obtenir le nom complet de l'utilisteur
+     *
+     * @return string
+     */
+    public function getFullCar(): string
+    {
+        return $this->brand." ".$this->model;
+    }
+
 
 
 

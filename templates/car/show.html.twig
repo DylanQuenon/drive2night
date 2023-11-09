@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ car.model }}{% endblock %}
+{% block title %}{{ car.fullCar }}{% endblock %}
 
 {% block body %}
     <div class="slides" id="showCar">
@@ -67,7 +67,7 @@
     </div>
         <div class="wrapper">
             {% if car.comments | length > 0 %}
-                <h2 class="mt-4 testFont">Commentaires de nos locataires</h2>
+                <h2 class="mt-4 testFont">Comments from our users</h2>
                 <div class="alert alert-info">
                     <h4 class="alert-heading text-center">
                         <div class="row align-items-center">

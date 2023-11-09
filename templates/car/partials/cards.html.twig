@@ -3,9 +3,9 @@
         {% set url = path('cars_show', {'slug':car.slug}) %}
         {% set brandUrl = path('cars_brand', {'slugBrand':car.slugBrand}) %}
 
-        <img src="{{ car.coverImage }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}">
+        <img src="{{ car.coverImage }}" class="card-img-top" alt="{{ car.fullCar }}">
         <div class="card-body">
-            <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+            <h5 class="card-title">{{ car.fullCar }}</h5>
             <p class="card-text">
                 <strong>Mileage:</strong> {{ car.km|number_format(0, ',', '.') }} km<br>
                 <strong>Price:</strong> ${{ car.price|number_format(0, ',', '.') }}<br>
