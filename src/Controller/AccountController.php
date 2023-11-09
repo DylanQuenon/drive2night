@@ -23,30 +23,7 @@ use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthentication
 
 class AccountController extends AbstractController
 {
-    /**
-     * Affiche le profil
-     *
-     * @return Response
-     */
-    #[Route('/profile', name: 'user_profile')]
-    public function userProfile(): Response
-    {
-        $user = $this->getUser(); // Récupérer l'utilisateur connecté
-
-        if ($user) {
-            $userCars = $user->getCars(); // getCars() récupère les voitures de l'utilisateur depuis le système
-            $userComments = $user->getComments(); // getComments() récupère les commentaires de l'utilisateur
-
-            return $this->render('account/viewProfile.html.twig', [
-                'user' => $user,
-                'userCars' => $userCars,
-                'userComments' => $userComments
-            ]);
-        } else {
-            $this->addFlash('warning', 'Vous devez être connecté pour accéder à votre profil.');
-            return $this->redirectToRoute('login'); // Rediriger vers la page de connexion
-        }
-    }
+   
 
     /**
      * Permet de se connecter

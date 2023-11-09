@@ -89,6 +89,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->slug = $slugify->slugify($this->firstName.' '.$this->lastName.' '.uniqid());
         }
     }
+      /**
+     * Permet d'obtenir le nom complet de l'utilisteur
+     *
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->firstName." ".$this->lastName;
+    }
 
 
 

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>
+            Profile of {{ user.fullName }} 
+            <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Profile Photo" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit:cover;">
+        </h1>
+        {% if user is same as(app.user) %}
+            <a href="{{ path('account_profile') }}" class="btn btn-primary me-2 mb-2">Edit my information</a>
+            <a href="{{ path('account_password') }}" class="btn btn-warning me-2 mb-2">Change my password</a>
+            <a href="{{ path('account_modifimg') }}" class="btn btn-success me-2 mb-2">Change my avatar</a>
+            <a href="{{ path('account_delimg') }}" class="btn btn-danger me-2 mb-2">Delete my avatar</a>
+        {% endif %}
+        <div class="mt-4">
+            <h2>Introduction</h2>
+            <p>{{ user.introduction }}</p>
+        </div>
+
+        <div class="mt-4">
+            <h2>Profile Description</h2>
+            <p>{{ user.description | raw | nl2br }}</p>
+        </div>
+
+        <div class="mt-4">
+            <h2>Cars Posted</h2>
+            {% for car in user.cars %}
+                <div class="row">
+                    <div class="col">
+                        {% include "/car/partials/cards.html.twig" %}
+                    </div>
+                    {% if user is same as(app.user) %}
+                        <div class="d-flex">
+                            <a href="{{ path('cars_edit', { 'slug': car.slug }) }}" class="btn btn-primary mb-3 mr-3">Edit</a>
+                            <a href="{{ path('cars_delete', { 'slug': car.slug }) }}" class="btn btn-danger mb-3 mx-3">Delete</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <h2>Comments</h2>
+            {% for comment in user.comments %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Said about {{ comment.car.brand }} {{ comment.car.model }}:</h5>
+                        <p class="card-text">{{ comment.content | raw | nl2br }}</p>
+                        <p><strong>Given Rating:</strong></p>
+                        {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-between">
+                        {% if user is same as(app.user) %}
+                            <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger" data-method="POST">Delete comment</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

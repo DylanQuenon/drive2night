@@ -3,41 +3,42 @@
 {% block title %}{{ car.model }}{% endblock %}
 
 {% block body %}
-<div class="slides" id="showCar">
-    <div class="container-pic">
-        <h2 class="modelCar">
-            <span id="brand">{{ car.brand }}</span> <br>
-            <span id="model">{{ car.model }}</span>
-        </h2>
-        <div class="contain-pic">
-            <img src="{{ car.coverImage }}" alt="Image of the {{ car.model }} car">
+    <div class="slides" id="showCar">
+        <div class="container-pic">
+            <h2 class="modelCar">
+                <span id="brand">{{ car.brand }}</span> <br>
+                <span id="model">{{ car.model }}</span>
+            </h2>
+            <div class="contain-pic">
+                <img src="{{ car.coverImage }}" alt="Image of the {{ car.model }} car">
+            </div>
+            <p class="price">${{ car.price | number_format(0, '.', ' ') }}</p>
         </div>
-        <p class="price">${{ car.price | number_format(0, '.', ' ') }}</p>
-    </div>
-    <div class="wrapper">
-        <div class="row-info d-flex justify-content-between flex-wrap">
-            <div class="block">
-                <p><strong>Brand: <br></strong> {{ car.brand }}</p>
-                <p><strong>Model: <br></strong> {{ car.model }}</p>
-                <p><strong>Year: <br></strong> {{ car.year }}</p>
+        <div class="wrapper">
+            <div class="row-info d-flex justify-content-between flex-wrap">
+                <!-- Informations spécifiques à la voiture -->
+                <div class="block">
+                    <p><strong>Brand: <br></strong> {{ car.brand }}</p>
+                    <p><strong>Model: <br></strong> {{ car.model }}</p>
+                    <p><strong>Year: <br></strong> {{ car.year }}</p>
+                </div>
+                <div class="block">
+                    <p><strong>Cylinder: <br></strong> {{ car.cylinder }} cm³</p>
+                    <p><strong>Power: <br></strong> {{ car.power }} Cv</p>
+                    <p><strong>Fuel: <br></strong> {{ car.fuel }}</p>
+                </div>
+                <div class="block">
+                    <p><strong>Transmission: <br></strong> {{ car.transmission }}</p>
+                    <p><strong>Owners: <br></strong> {{ car.owners }}</p>
+                    <p><strong>Km: <br></strong> {{ car.km | number_format(0, '.', ' ') }} km</p>
+                </div>
             </div>
-            <div class="block">
-                <p><strong>Cylinder: <br></strong> {{ car.cylinder }} cm³</p>
-                <p><strong>Power: <br></strong> {{ car.power }} Cv</p>
-                <p><strong>Fuel: <br></strong> {{ car.fuel }}</p>
-            </div>
-            <div class="block">
-                <p><strong>Transmission: <br></strong> {{ car.transmission }}</p>
-                <p><strong>Owners: <br></strong> {{ car.owners }}</p>
-                <p><strong>Km: <br></strong> {{ car.km | number_format(0, '.', ' ') }} km</p>
-            </div>
+            <h2 class="my-3">Description</h2>
+            <p class="my-3">{{ car.content | raw | nl2br }}</p>
+            <h2 class="my-3">Options</h2>
+            <p class="my-3">{{ car.options | raw | nl2br }}</p>
         </div>
-        <h2 class="my-3">Description</h2>
-        <p class="my-3">{{ car.content | raw | nl2br }}</p>
-        <h2 class="my-3">Options</h2>
-        <p class="my-3">{{ car.options | raw | nl2br }}</p>
-    </div>
-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" style="max-height: 400px">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" style="max-height: 400px">
         <div class="carousel-indicators">
             {% for image in car.images %}
                 <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active" {% endif %}></button>
@@ -54,6 +55,7 @@
                 </div>
             {% endfor %}
         </div>
+       
         <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" ariahidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -63,50 +65,57 @@
             <span class="visually-hidden">Next</span>
         </a>
     </div>
-    <div class="wrapper">
-        {% if car.comments | length > 0 %}
-            <h2 class="mt-4 testFont">Commentaires de nos locataires</h2>
-            <div class="alert alert-info">
-                <h4 class="alert-heading text-center">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            Note globale
+        <div class="wrapper">
+            {% if car.comments | length > 0 %}
+                <h2 class="mt-4 testFont">Commentaires de nos locataires</h2>
+                <div class="alert alert-info">
+                    <h4 class="alert-heading text-center">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                Note globale
+                            </div>
+                            <div class="col">
+                                {{ car.getAvgRatings() }} / 5 <!-- Affiche la moyenne des notations -->
+                                <br>
+                                <small>(average based on {{ car.comments | length }} reviews)</small>
+                            </div>
                         </div>
-                        <div class="col">
-                            {{ car.getAvgRatings() }} / 5 <!-- Affiche la moyenne des notations -->
-                            <br>
-                            <small>(average based on {{ car.comments | length }} reviews)</small>
-                        </div>
-                    </div>
-                </h4>
-            </div>
-
-            {% for comment in car.comments %}
-                <div class="bg-light mb-4 p-3">
-                    <strong>{{ comment.author.firstName }} said :</strong>
-                    <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
-                    <strong>Note donnée :</strong>
-                    {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
+                    </h4>
                 </div>
-            {% endfor %}
-        {% else %}
-            <h2 class="mt-4">This car has not yet received any comments...</h2>
-        {% endif %}
-    
+
+                {% for comment in car.comments %}
+                    <div class="bg-light mb-4 p-3">
+                        <strong><a href="{{ path('user_show', {'slug': comment.author.slug}) }}">{{ comment.author.fullName }}</a> said :</strong>
+                        <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
+                        <strong>Note donnée :</strong>
+                        {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h2 class="mt-4">This car has not yet received any comments...</h2>
+            {% endif %}
+
             <div class="col-lg-4">
                 <h4 class="mt-3">Do you have a comment? </h4>
                 {% if app.user %}
+                    <!-- Formulaire pour ajouter un commentaire -->
                     {{ form_start(myForm) }}
-                    {{form_widget(myForm)}}
+                    {{ form_widget(myForm) }}
                     <button type="submit" class="btn btn-danger mt-2">add a comment</button>
                     {{ form_end(myForm) }}
                 {% else %}
                     <p class="alert alert-info">Please login to add a comment.</p>
                 {% endif %}
             </div>
+        <!-- Section pour afficher l'auteur de l'annonce -->
+        <h2 class="mt-4">This car was posted by:</h2>
+        <p>
+            <strong>
+                <a href="{{ path('user_show', {'slug': car.author.slug}) }}">{{ car.author.fullName }}</a>
+                <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+            </strong>
+        </p>
         </div>
     </div>
-
 </div>
 {% endblock %}
-
