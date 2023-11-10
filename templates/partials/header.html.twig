@@ -29,10 +29,10 @@
                   <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="accountDropdownLink">{{app.user.fullName}} 
                        {% if app.user.picture %}
-    <img src="{{ asset('/uploads/' ~ app.user.picture) }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 40px; height: 40px; object-fit: cover;">
-{% else %}
-    <img src="{{ asset('/uploads/user.webp') }}" alt="Photo de profil par défaut" class="rounded-circle mx-" style="width: 40px; height: 40px; object-fit: cover;">
-{% endif %}
+                        <img src="{{ asset('/uploads/' ~ app.user.picture) }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 40px; height: 40px; object-fit: cover;">
+                    {% else %}
+                        <img src="{{ asset('/uploads/user.webp') }}" alt="Photo de profil par défaut" class="rounded-circle mx-" style="width: 40px; height: 40px; object-fit: cover;">
+                    {% endif %}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountDropdownLink">
                     <a href="{{path('cars_create')}}" class="dropdown-item">Post a Car</a>
