@@ -1,17 +1,17 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Modifier avatar{% endblock %}
+{% block title %}Modify avatar{% endblock %}
 
 {% block body %}
     <div class="container full">
-        <h1>Modification de l'avatar de {{app.user.email}}</h1>
+        <h1>Modification of {{app.user.fullName}} avatar</h1>
         <img src="/uploads/{{app.user.picture}}" alt="avatar de {{app.user.email}}" id="picAvatar">
         {{form_start(myForm)}}
             {{form_widget(myForm)}}
-            <button type="submit" class='btn btn-warning'>Confirmez la modification de l'avatar</button>
+            <button type="submit" class='btn btn-warning'>Confirm avatar modification</button>
         {{form_end(myForm)}}
           {% if app.user.picture is not empty %}
-            <a href="{{ path('account_delimg') }}" class="btn btn-danger my-2">Supprimer avatar</a>
+            <a href="{{ path('account_delimg') }}" class="btn btn-danger my-2">Delete avatar</a>
           {% endif %}
     </div>
 {% endblock %} 

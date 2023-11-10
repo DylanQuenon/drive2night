@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil Utilisateur{% endblock %}
+{% block title %}User Profile{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Profil de {{ user.firstName }}</h1>
-         <div>
-                <a href="{{ path('account_modifimg') }}" class="btn btn-success mr-2">Modifier l'avatar</a>
-                <a href="{{ path('account_profile') }}" class="btn btn-info mr-2">Modifier le profil</a>
-                <a href="{{ path('cars_create') }}" class="btn btn-danger">Ajouter une nouvelle voiture</a>
-            </div>
+        <h1>User Profile: {{ user.firstName }}</h1>
+        <div>
+            <a href="{{ path('account_modifimg') }}" class="btn btn-success mr-2">Change Avatar</a>
+            <a href="{{ path('account_profile') }}" class="btn btn-info mr-2">Edit Profile</a>
+            <a href="{{ path('cars_create') }}" class="btn btn-danger">Add a New Car</a>
+        </div>
         <div class="mt-4">
-            <h2>Voitures postées</h2>
+            <h2>Posted Cars</h2>
 
             {% for car in userCars %}
                 <div class="row">
@@ -19,26 +19,25 @@
                         {% include "/car/partials/cards.html.twig" %}
                     </div>
                     <div class="d-flex">
-                        <a href="{{ path('cars_edit', { 'slug': car.slug }) }}" class="btn btn-primary  mb-3 mr-3">Modifier</a>
-                        <a href="{{ path('cars_delete', { 'slug': car.slug }) }}" class="btn btn-danger  mb-3 mx-3">Supprimer</a>
+                        <a href="{{ path('cars_edit', { 'slug': car.slug }) }}" class="btn btn-primary  mb-3 mr-3">Edit</a>
+                        <a href="{{ path('cars_delete', { 'slug': car.slug }) }}" class="btn btn-danger  mb-3 mx-3">Delete</a>
                     </div>
                 </div>
             {% endfor %}
         </div>
         
         <div class="mt-4">
-            <h2>Commentaires</h2>
+            <h2>Comments</h2>
             {% for comment in userComments %}
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Vous avez dit sur {{ comment.car.brand }} {{ comment.car.model }}:</h5>
+                        <h5 class="card-title">Your comment on {{ comment.car.brand }} {{ comment.car.model }}:</h5>
                         <p class="card-text">{{ comment.content | raw | nl2br }}</p>
-                        <p><strong>Note donnée :</strong></p>
+                        <p><strong>Given Rating:</strong></p>
                         {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
                     </div>
                     <div class="card-footer text-muted d-flex justify-content-between">
-               <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger" data-method="POST">Supprimer le commentaire</a>
-
+                        <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger" data-method="POST">Delete Comment</a>
                     </div>
                 </div>
             {% endfor %}

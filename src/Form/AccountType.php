@@ -15,11 +15,11 @@ class AccountType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName', TextType::class ,$this->getConfiguration("Prénom", "Votre prénom..."))
-            ->add('lastName', TextType::class ,$this->getConfiguration("nom", "Votre nom de famille..."))
-            ->add('email', EmailType::class, $this->getConfiguration("Email", "Votre adresse e-mail..."))
-            ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Présentation rapide"))
-            ->add('description', TextareaType::class, $this->getConfiguration("Description détaillée", "Présentez vous avec un peu plus de détails"))
+        ->add('firstName', TextType::class ,$this->getConfiguration("First name", "Your first name..."))
+        ->add('lastName', TextType::class ,$this->getConfiguration("Last name", "Your last name..."))
+        ->add('email', EmailType::class, $this->getConfiguration("Email", "Your email address..."))
+        ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Quick introduction"))
+        ->add('description', TextareaType::class, $this->getConfiguration("Detailed description", "Introduce yourself with a little more detail"))
 
         ;
     }

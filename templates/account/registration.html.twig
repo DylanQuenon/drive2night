@@ -1,14 +1,14 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Inscription au site{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block body %}
     <div class="container full">
-        <h1>Inscription sur drive2night</h1>
+        <h1>Register on Drive2Night</h1>
         {{form_start(myForm)}}
 
             {{form_widget(myForm)}}
-            <button type="submit" class='btn btn-success'>Confirmez l'inscription</button>
+            <button type="submit" class='btn btn-success'>Confirm registration</button>
         {{form_end(myForm)}}
     </div>
 {% endblock %}

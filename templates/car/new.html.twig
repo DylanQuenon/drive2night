@@ -1,14 +1,14 @@
 {% extends "base.html.twig" %}
 
 
-{% block title %}Ajouter d'une voiture{% endblock %}
+{% block title %}Add a car{% endblock %}
 
 {# {% form_theme myForm _self %} #}
 {% form_theme myForm 'car/_collection.html.twig' %}
 
 {% block body %}
     <div class="container">
-        <h1>Ajouter d'une nouvelle voiture</h1>
+        <h1>Add a new car</h1>
 
         {{ form_start(myForm) }}
 
@@ -16,7 +16,7 @@
 
              {{form_widget(myForm)}}
 
-            <button type="submit" class="btn btn-primary mt-3">Ajouter d'une voiture</button>
+            <button type="submit" class="btn btn-primary mt-3">Add a new car</button>
 
 
 

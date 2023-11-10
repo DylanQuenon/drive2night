@@ -1,14 +1,14 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Modification du profil utilisateur{% endblock %}
+{% block title %}User profile modification{% endblock %}
 
 {% block body %}
     <div class="container full">
-        <h1>Modification du profil</h1>
-        <a href="{{ path('account_modifimg') }}" class="btn btn-primary">Modifier l'avatar</a>
+        <h1>User profile modification</h1>
+              <a href="{{ path('account_modifimg') }}" class="btn btn-success me-2 mb-2">Change my avatar</a>
         {{ form_start(myForm) }}
             {{ form_widget(myForm) }}
-            <button type="submit" class="btn btn-warning">Enregistrer les modifications</button>
+            <button type="submit" class="btn btn-warning">Save changes</button>
         {{ form_end(myForm) }}
 
         {# Ajoutez un lien/bouton pour la modification de l'avatar #}

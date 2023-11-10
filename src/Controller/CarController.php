@@ -53,7 +53,7 @@ class CarController extends AbstractController
             // j'envoie les persistances dans la bdd
             $manager->flush();
 
-            $this->addFlash('success', "L'annonce <strong>".$car->getBrand().$car->getModel()."</strong> a bien été enregistrée");
+            $this->addFlash('success', "The car <strong>".$car->getFullCar()."</strong> has been successfully saved");
 
             return $this->redirectToRoute('cars_show',[
                 'slug' => $car->getSlug(),
@@ -174,7 +174,7 @@ class CarController extends AbstractController
             if ($this->getUser() === $car->getAuthor()) {
                 $this->addFlash(
                     'warning',
-                    'Vous ne pouvez pas commenter votre propre voiture.'
+                    'You cannot comment on your own car.'
                 );
                 return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
             }
@@ -188,7 +188,7 @@ class CarController extends AbstractController
             if ($existingComment) {
                 $this->addFlash(
                     'warning',
-                    'Vous avez déjà commenté cette voiture. Seul un commentaire par voiture est autorisé.'
+                    'You have already commented on this car. Only one comment per car is allowed.'
                 );
                 return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
             }
@@ -202,7 +202,7 @@ class CarController extends AbstractController
     
             $this->addFlash(
                 'success',
-                'Votre commentaire a bien été pris en compte'
+                "Your comment has been successfully recorded."
             );
     
             // Rediriger vers la même page pour réinitialiser le formulaire
@@ -228,7 +228,7 @@ class CarController extends AbstractController
     #[IsGranted(
         attribute: new Expression('(user === subject and is_granted("ROLE_USER")) or is_granted("ROLE_ADMIN")'),
         subject: new Expression('args["car"].getAuthor()'),
-        message: "Cette voiture ne vous appartient pas, vous ne pouvez pas la modifier"
+        message: "This car does not belong to you; you cannot modify it."
     )]
     public function edit(Request $request, EntityManagerInterface $manager, Cars $car): Response
     {
@@ -259,7 +259,7 @@ class CarController extends AbstractController
 
             $this->addFlash(
             'success',
-            "La voiture <strong>".$car->getBrand().$car->getModel()."</strong> a bien été modifiée!"
+            "The car <strong>".$car->getFullCar()."</strong> has been modified!"
             );
 
             return $this->redirectToRoute('cars_show',[
@@ -285,13 +285,13 @@ class CarController extends AbstractController
     #[IsGranted(
         attribute: new Expression('(user === subject and is_granted("ROLE_USER")) or is_granted("ROLE_ADMIN")'),
         subject: new Expression('args["car"].getAuthor()'),
-        message: "Cette voiture ne vous appartient pas, vous ne pouvez pas la supprimer"
+        message: "This car doesn't belong to you, you can't delete it."
     )]
     public function delete(Cars $car, EntityManagerInterface $manager): Response
     {
         $this->addFlash(
             'success',
-            "La voiture <strong>".$car->getBrand().$car->getModel()."</strong> a bien été supprimée"
+            "The car <strong>".$car->getBrand().$car->getModel()."</strong> has been deleted."
         );
 
         $manager->remove($car);
@@ -303,7 +303,7 @@ class CarController extends AbstractController
     #[IsGranted(
         attribute: new Expression('(user === subject and is_granted("ROLE_USER")) or is_granted("ROLE_ADMIN")'),
         subject: new Expression('args["comment"].getAuthor()'),
-        message: "Ce commentaire ne vous appartient pas, vous ne pouvez pas le supprimer"
+        message: "This comment does not belong to you, you cannot delete it."
     )]
     public function deleteComment(Comment $comment, EntityManagerInterface $manager): Response
     {
@@ -312,7 +312,8 @@ class CarController extends AbstractController
         $manager->remove($comment);
         $manager->flush();
     
-        $this->addFlash('success', "Le commentaire a été supprimé avec succès.");
+        $this->addFlash('success', "The comment has been successfully deleted.");
+
         return $this->redirectToRoute('account_index');
     }
 

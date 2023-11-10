@@ -130,34 +130,51 @@ class AccountController extends AbstractController
     #[Route("/account/profile", name:"account_profile")]
     public function profile(Request $request, EntityManagerInterface $manager): Response
     {
-        // Vérifie si un utilisateur est connecté
-     
-            $user = $this->getUser(); // permet de récupérer l'utilisateur connecté
-            $fileName = $user->getPicture();
-            if(!empty($fileName)){
-                $user->setPicture(
-                    new File($this->getParameter('uploads_directory').'/'.$user->getPicture())
+        $user = $this->getUser();
+
+        // Récupère le nom du fichier actuel
+        $fileName = $user->getPicture();
+
+        // Crée le formulaire
+        $form = $this->createForm(AccountType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Si une nouvelle image est téléchargée, traitez-la
+            $uploadedFile = $form->get('picture')->getData();
+
+            if ($uploadedFile) {
+                // Génère un nom de fichier unique
+                $fileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+
+                // Déplace l'image téléchargée vers le répertoire d'uploads
+                $uploadedFile->move(
+                    $this->getParameter('uploads_directory'),
+                    $fileName
                 );
             }
-            $form = $this->createForm(AccountType::class, $user);
-            $form->handleRequest($request);
-    
-            if ($form->isSubmitted() && $form->isValid()) {
-                $user->setSlug('')
-                ->setPicture($fileName);
-                $manager->persist($user);
-                $manager->flush();
-    
-                $this->addFlash(
-                    'success',
-                    "Les données ont été enregistrées avec succès"
-                );
-            }
-    
-            return $this->render("account/profile.html.twig", [
-                'myForm' => $form->createView()
-            ]);
-       
+
+            // Mise à jour d'autres informations de l'utilisateur
+            $user->setSlug('');
+
+            // Mise à jour du nom du fichier dans l'entité
+            $user->setPicture($fileName);
+
+            // Persiste et flush dans la base de données
+            $manager->persist($user);
+            $manager->flush();
+
+            // Flash message de succès
+            $this->addFlash(
+                'success',
+                "Les données ont été enregistrées avec succès"
+            );
+        }
+
+        // Rendu du template
+        return $this->render("account/profile.html.twig", [
+            'myForm' => $form->createView()
+        ]);
     }
         /**
      * Permet de modifier le mot de passe
@@ -182,7 +199,7 @@ class AccountController extends AbstractController
             if(!password_verify($passwordUpdate->getOldPassword(),$user->getPassword()))
             {
                 // gestion de l'erreur
-                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel"));
+                $form->get('oldPassword')->addError(new FormError("The password you entered is not your current password"));
             }else{
                 $newPassword = $passwordUpdate->getNewPassword();
                 $hash = $hasher->hashPassword($user, $newPassword);
@@ -193,7 +210,7 @@ class AccountController extends AbstractController
 
                 $this->addFlash(
                     'success',
-                    'Votre mot de passe a bien été modifié'
+                    'Your password has been changed.'
                 );
 
                 return $this->redirectToRoute('homepage');
@@ -225,7 +242,7 @@ class AccountController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                'Votre avatar a bien été supprimé'
+                'Your avatar has been deleted.'
             );
         }
 
@@ -281,7 +298,7 @@ class AccountController extends AbstractController
 
               $this->addFlash(
                 'success',
-                'Votre avatar a bien été modifié'
+                'Your avatar has been modified.'
               );
 
               return $this->redirectToRoute('homepage');

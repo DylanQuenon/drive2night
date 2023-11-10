@@ -122,7 +122,7 @@
         <p>
             <strong>
                 <a href="{{ path('user_show', {'slug': car.author.slug}) }}">{{ car.author.fullName }}</a>
-                <img src="{{ car.author.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Photo de profil" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+                <img src="{{ car.author.picture ? asset('/uploads/' ~ car.author.picture) : asset('/uploads/user.webp') }}" alt="Photo de profil de l'auteur de la voiture" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
 
             </strong>
         </p>

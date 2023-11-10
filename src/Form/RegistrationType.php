@@ -18,18 +18,17 @@ class RegistrationType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName', TextType::class, $this->getConfiguration("Prénom", "Votre prénom..."))
-            ->add('lastName', TextType::class, $this->getConfiguration("Nom", "Votre nom de famille..."))
-            ->add('email', EmailType::class, $this->getConfiguration("Email", "Votre adresse e-mail..."))
-            ->add('picture', FileType::class, [
-                'label' => "Avatar(jpg, png, gif)",
-                'required' => false
-            ])
-            ->add('password', PasswordType::class, $this->getConfiguration("Mot de passe", "Votre mot de passe"))
-            ->add('passwordConfirm', PasswordType::class, $this->getConfiguration("Confirmation du mot de passe", "Veuillez confirmer votre mot de passe"))
-            ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Présentation rapide"))
-            ->add('description', TextareaType::class, $this->getConfiguration("Description détaillée", "Présentez vous avec un peu plus de détails"))
-        ;
+        ->add('firstName', TextType::class, $this->getConfiguration("First name", "Your first name..."))
+        ->add('lastName', TextType::class, $this->getConfiguration("Last name", "Your last name..."))
+        ->add('email', EmailType::class, $this->getConfiguration("Email", "Your email address..."))
+        ->add('picture', FileType::class, [
+            'label' => "Avatar(jpg, png, gif)",
+            'required' => false
+        ])
+        ->add('password', PasswordType::class, $this->getConfiguration("Password", "Your password"))
+        ->add('passwordConfirm', PasswordType::class, $this->getConfiguration("Confirm password", "Please confirm your password"))
+        ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Quick introduction"))
+        ->add('description', TextareaType::class, $this->getConfiguration("Detailed description", "Introduce yourself with a little more detail"))        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

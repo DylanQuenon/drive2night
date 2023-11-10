@@ -3,10 +3,13 @@
 {% block title %}User Profile{% endblock %}
 
 {% block body %}
+
     <div class="container">
+    
         <h1>
             Profile of {{ user.fullName }} 
-            <img src="{{ app.user.picture ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Profile Photo" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit:cover;">
+            <img src="{{ app.user is not null and app.user.picture is not null ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Profile Photo" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+
         </h1>
         {% if user is same as(app.user) %}
             <a href="{{ path('account_profile') }}" class="btn btn-primary me-2 mb-2">Edit my information</a>

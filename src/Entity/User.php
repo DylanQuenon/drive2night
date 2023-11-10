@@ -33,31 +33,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Veuillez renseigner un mot de passe")]
+    #[Assert\NotBlank(message: "Please enter a password")]
     private ?string $password = null;
 
-    #[Assert\EqualTo(propertyPath:"password", message:"Vous n'avez pas correctement confirmé votre mot de passe")]
+    #[Assert\EqualTo(propertyPath: "password", message: "You have not correctly confirmed your password")]
     public ?string $passwordConfirm = null; 
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Veuillez renseigner votre prénom")]
+    #[Assert\NotBlank(message: "Please enter your first name")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-     #[Assert\NotBlank(message: "Veuillez renseigner votre nom de famille")]
+     #[Assert\NotBlank(message: "Please enter your last name")]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Image(mimeTypes:['image/png','image/jpeg', 'image/jpg', 'image/gif'], mimeTypesMessage:"Vous devez upload un fichier jpg, jpeg, png ou gif")]
-    #[Assert\File(maxSize:"1024k", maxSizeMessage: "La taille du fichier est trop grande")]
+    #[Assert\Image(mimeTypes:['image/png','image/jpeg', 'image/jpg', 'image/gif'], mimeTypesMessage: "You must upload a jpg, jpeg, png or gif file")]
+    #[Assert\File(maxSize: "1024k", maxSizeMessage: "The file size is too large")]
     private ?string $picture = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 10, max: 255, minMessage:"Votre introduction doit faire plus de 10 caractères", maxMessage:"Votre introduction ne doit pas faire plus de 255 caractères")]
+    #[Assert\Length(min: 10, max: 255, minMessage: "Your introduction must be longer than 10 characters", maxMessage: "Your introduction must be no longer than 255 characters")]
     private ?string $introduction = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\Length(min: 100, minMessage:"Votre description doit faire plus de 100 caractères")]
+    #[Assert\Length(min: 100, minMessage: "Your description must be longer than 100 characters")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]

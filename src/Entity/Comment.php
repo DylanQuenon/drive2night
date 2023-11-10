@@ -23,11 +23,11 @@ class Comment
 
 
     #[ORM\Column]
-    #[Assert\Range(min:0,max:5, notInRangeMessage:"Vous devez choisir un chiffre entre 0 et 5")]
+    #[Assert\Range(min:0,max:5, notInRangeMessage: "You must choose a number between 0 and 5")]
     private ?int $rating = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\Length(min: 10, minMessage:"Votre commentaire doit faire au moins 10 caractères")]
+    #[Assert\Length(min: 10, minMessage: "Your comment must be at least 10 characters long")]
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]

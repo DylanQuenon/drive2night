@@ -1,23 +1,23 @@
 {% extends "base.html.twig" %}
 
 
-{% block title %}Modification d'une voiture{% endblock %}
+{% block title %}Modifying a car{% endblock %}
 
 {# {% form_theme myForm _self %} #}
 {% form_theme myForm 'car/_collection.html.twig' %}
 
 {% block body %}
     <div class="container">
-        <h1>Modification de la voiture : <strong>{{car.brand}} {{car.model}}</h1>
-        <form method="post" action="{{ path('cars_delete', {'slug': car.slug}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette voiture ?');">
-            <button type="submit" class="btn btn-danger mt-3">Supprimer</button>
+        <h1>Car modification: <strong>{{car.fullCar}}</h1>
+        <form method="post" action="{{ path('cars_delete', {'slug': car.slug}) }}" onsubmit="return confirm('Are you sure you want to get rid of this car?');">
+            <button type="submit" class="btn btn-danger mt-3">Delete</button>
         </form>
 
         {{ form_start(myForm) }}
 
              {{form_widget(myForm)}}
 
-            <button type="submit" class="btn btn-primary mt-3">Modifier</button>
+            <button type="submit" class="btn btn-primary mt-3">Modify</button>
             
 
 

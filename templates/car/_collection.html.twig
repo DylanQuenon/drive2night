@@ -1,10 +1,10 @@
 {% block _car_images_widget %}
     {# Définition du champ annonce_image, la variable form correspond au hamp annonce_image #}
-    <p>Ici, vous pouvez ajouter vos propres images</p>
+   <p>Here you can add your own images</p>
     {{form_widget(form)}}
     <input type="hidden" id="widgets-counter" value="0">
     <div class="form-group">
-        <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
+        <button type="button" id="add-image" class="btn btn-warning">Add an image</button>
     </div> 
 
 {% endblock %}

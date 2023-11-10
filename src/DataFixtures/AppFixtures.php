@@ -106,11 +106,13 @@ class AppFixtures extends Fixture
                 for ($b = 1; $b <= rand(0, 10); $b++) {
                     $createAt = $faker->dateTimeBetween('-6 months', "-4 months");
                     $createdAt = new DateTimeImmutable($createAt->format('Y-m-d'));
+
+                    $commentingUser = $users[rand(0, count($users)-1)];
                     // Gestion des commentaires
                     $comment = new Comment();
                     $comment->setContent($faker->paragraph())
                         ->setRating(rand(1, 5))
-                        ->setAuthor($user)
+                        ->setAuthor($commentingUser)
                         ->setCar($cars)
                         ->setCreateAt($createdAt);
                     $manager->persist($comment);

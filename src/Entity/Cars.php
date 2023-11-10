@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields:['model'], message:"Une autre voiture possède déjà ce model, merci de la modifier")]
+#[UniqueEntity(fields:['model'], message: "Another car already has this model, please modify it")]
 class Cars
 {
     #[ORM\Id]
@@ -22,18 +22,16 @@ class Cars
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 1, max: 255, minMessage:"Le modèle doit faire plus de 1 caractère", maxMessage: "Le modèle ne doit pas faire plus de 255 caractères")]
-    private ?string $model = null;
+    #[Assert\Length(min: 1, max: 255, minMessage: "Template must be longer than 1 character", maxMessage: "Template must not be longer than 255 characters")]    private ?string $model = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 3, max: 255, minMessage:"La marque doit faire plus de 3 caractères", maxMessage: "La marque ne doit pas faire plus de 255 caractères")]
-    private ?string $brand = null;
+    #[Assert\Length(min: 3, max: 255, minMessage: "The mark must be longer than 3 characters", maxMessage: "The mark must not be longer than 255 characters")]    private ?string $brand = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Url(message: "Il faut une URL valide")]
+    #[Assert\Url(message: "A valid URL is required")]
     private ?string $coverImage = null;
 
     #[ORM\Column]
@@ -55,8 +53,7 @@ class Cars
     private ?string $fuel = null;
 
     #[ORM\Column]
-    #[Assert\Range(min: 2000, max: 2023, notInRangeMessage: "L'année d'origine de votre voiture doit être comprise entre 2000 et 2023")]
-    private ?int $year = null;
+    #[Assert\Range(min: 2000, max: 2023, notInRangeMessage: "The original year of your car must be between 2000 and 2023")]    private ?int $year = null;
 
     #[ORM\Column(length: 255)]
     private ?string $transmission = null;
