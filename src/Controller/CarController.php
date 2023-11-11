@@ -48,7 +48,7 @@ class CarController extends AbstractController
             }
             $car->setAuthor($this->getUser());
 
-            // je persiste mon objet Ad
+            // je persiste mon objet Cars
             $manager->persist($car);
             // j'envoie les persistances dans la bdd
             $manager->flush();
