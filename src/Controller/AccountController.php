@@ -167,7 +167,7 @@ class AccountController extends AbstractController
             // Flash message de succès
             $this->addFlash(
                 'success',
-                "Data successfully recorded".
+                "Data successfully recorded."
             );
         }
 
