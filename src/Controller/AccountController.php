@@ -126,8 +126,8 @@ class AccountController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[IsGranted('ROLE_USER')]
     #[Route("/account/profile", name:"account_profile")]
+    #[IsGranted('ROLE_USER')]
     public function profile(Request $request, EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
@@ -167,7 +167,7 @@ class AccountController extends AbstractController
             // Flash message de succès
             $this->addFlash(
                 'success',
-                "Les données ont été enregistrées avec succès"
+                "Data successfully recorded".
             );
         }
 
