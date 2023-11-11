@@ -130,51 +130,40 @@ class AccountController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function profile(Request $request, EntityManagerInterface $manager): Response
     {
-        $user = $this->getUser();
+        $user = $this->getUser(); // permet de récup l'utilisateur connecté
 
-        // Récupère le nom du fichier actuel
+        // pour la validation des images (plus tard validation groups)
         $fileName = $user->getPicture();
+        if(!empty($fileName)){
+            $user->setPicture(
+                new File($this->getParameter('uploads_directory').'/'.$user->getPicture())
+            );
+        }
 
-        // Crée le formulaire
-        $form = $this->createForm(AccountType::class, $user);
+        $form = $this->createForm(AccountType::class,$user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Si une nouvelle image est téléchargée, traitez-la
-            $uploadedFile = $form->get('picture')->getData();
+        if($form->isSubmitted() && $form->isValid())
+        {
 
-            if ($uploadedFile) {
-                // Génère un nom de fichier unique
-                $fileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+            $user->setSlug('')
+                ->setPicture($fileName);
 
-                // Déplace l'image téléchargée vers le répertoire d'uploads
-                $uploadedFile->move(
-                    $this->getParameter('uploads_directory'),
-                    $fileName
-                );
-            }
-
-            // Mise à jour d'autres informations de l'utilisateur
-            $user->setSlug('');
-
-            // Mise à jour du nom du fichier dans l'entité
-            $user->setPicture($fileName);
-
-            // Persiste et flush dans la base de données
             $manager->persist($user);
             $manager->flush();
 
-            // Flash message de succès
             $this->addFlash(
                 'success',
                 "Data successfully recorded."
             );
+
+            return $this->redirectToRoute('account_index');
         }
 
-        // Rendu du template
-        return $this->render("account/profile.html.twig", [
+        return $this->render("account/profile.html.twig",[
             'myForm' => $form->createView()
         ]);
+
     }
         /**
      * Permet de modifier le mot de passe
