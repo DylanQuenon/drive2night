@@ -8,9 +8,13 @@
     
         <h1>
             Profile of {{ user.fullName }} 
-            <img src="{{ app.user is not null and app.user.picture is not null ? asset('uploads/' ~ app.user.picture) : asset('uploads/user.webp') }}" alt="Profile Photo" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
-
+            {% if user.picture %}
+                <img src="/uploads/{{user.picture}}" alt="Avatar de {{user.fullName}}" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+            {% else %}
+                <img src="/uploads/user.webp" alt="Avatar de {{user.fullName}}" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+            {% endif %}
         </h1>
+
         {% if user is same as(app.user) %}
             <a href="{{ path('account_profile') }}" class="btn btn-primary me-2 mb-2">Edit my information</a>
             <a href="{{ path('account_password') }}" class="btn btn-warning me-2 mb-2">Change my password</a>

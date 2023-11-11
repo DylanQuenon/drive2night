@@ -122,8 +122,11 @@
         <p>
             <strong>
                 <a href="{{ path('user_show', {'slug': car.author.slug}) }}">{{ car.author.fullName }}</a>
-                <img src="{{ car.author.picture ? asset('/uploads/' ~ car.author.picture) : asset('/uploads/user.webp') }}" alt="Photo de profil de l'auteur de la voiture" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
-
+                {% if car.author.picture %}
+                    <img src="/uploads/{{car.author.picture}}" alt="Avatar de {{car.author.fullName}} " class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+                {% else %}
+                    <img src="{{ asset('uploads/user.webp') }}" alt="Avatar de {{ car.author.fullName }}" class="rounded-circle mx-" style="width: 80px; height: 80px; object-fit: cover;">
+                {% endif %}
             </strong>
         </p>
         </div>
