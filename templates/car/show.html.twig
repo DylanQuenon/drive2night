@@ -104,10 +104,9 @@
                         <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
                         <strong>Note donnée :</strong>
                         {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
-                        {% if (app.user and app.user == car.author) or is_granted('ROLE_ADMIN') %}
-                            <a href="{{path('comment_delete', {'id':comment.id})}}" class="btn btn-danger m-2">Delete comment</a>
-     
-                        {% endif %}
+               {% if app.user and (comment.author == app.user or is_granted('ROLE_ADMIN')) %}
+    <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger m-2">Delete comment</a>
+{% endif %}
                     </div>
                 {% endfor %}
             {% else %}
