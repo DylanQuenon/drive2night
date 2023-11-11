@@ -402,7 +402,6 @@ background-color: $red !important;
         align-items: center;
         flex-direction: column;
         position: relative;
-     
         h2{
             text-align: center;
             position: absolute;
@@ -448,6 +447,7 @@ background-color: $red !important;
         left: 7%;
         font-size: 4em;
         color: $black;
+        z-index: 5;
         font-weight: bold;
     }
     .carousel{
