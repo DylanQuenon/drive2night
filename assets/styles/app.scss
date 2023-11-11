@@ -56,6 +56,11 @@ body,html{
     flex-wrap: wrap;
     min-height: 90vh;
     position: relative;
+    @media all and (max-width: 992px){
+        min-height: auto;
+        margin: 20px 0;
+    } 
+    
 
     .left-home,.right-home{
         width: 50%;
@@ -237,6 +242,7 @@ body,html{
     background-color: $red;
     @include background();
     min-height: 300px;
+  
     color: white;
     @media all and (max-width: 992px){
         text-align: center;
@@ -337,6 +343,7 @@ background-color: $red !important;
     width: 100%;
     min-height: 100px;
     background-color: $red;
+    margin-bottom: 20px;
   }
   #bandeau .scene {
     width: 100%;
@@ -344,6 +351,12 @@ background-color: $red !important;
     background-color: $red;
     position: relative;
     overflow: hidden;
+
+    @media all and (max-width: 992px){
+        min-height: 100px;
+   
+       
+      } 
   }
  #bandeau .scene .element{
       position: absolute;
@@ -465,7 +478,7 @@ background-color: $red !important;
 
 }
 .card-img, .card-img-bottom, .card-img-top {
-    width: 414px !important;
+    width:100% !important;
     height: 100%;
     object-fit: contain !important;
   }
@@ -474,4 +487,8 @@ background-color: $red !important;
   }
   .img_carouss{
     height: 400px;
+    @media all and (max-width: 992px){
+      object-fit: contain;
+       
+      } 
   }
