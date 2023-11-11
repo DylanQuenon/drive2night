@@ -140,17 +140,29 @@ class CarController extends AbstractController
 
      //regex pour la pagination, il va prendre le paramètre page qui doit contenir un chiffre entre 0 et 9, si il n'ya rien la valeur par défaut sera 1
     #[Route('/cars/{page<\d+>?1}', name: 'cars_index')] 
-    public function index(CarsRepository $repo,$page,PaginationService $pagination): Response
+  
+    public function index(CarsRepository $repo, $page, PaginationService $pagination): Response
     {
-        
-      
-        $pagination->setEntityClass(Cars::class)//Définit l'entité pour la pagination
-                    ->setPage($page)//calculer le nombre de page (paramètre renvoyé dans l'url)
-                    ->setLimit(9);//la limite par page sera de 9
+        $limit = 9; //limite par page
+    
+        $pagination->setEntityClass(Cars::class)
+            ->setPage($page)
+            ->setLimit($limit);
+    
+        $totalCars = $repo->count([]);
+    
+        // Vérifie si le nombre total de voitures et la limite sont non nuls avant de calculer le nombre de pages
+        $totalPages = ($totalCars > 0 && $limit > 0) ? ceil($totalCars / $limit) : 1;
+    
+        // Vérifie si la page demandée est supérieure au nombre total de pages
+        if ($page < 1 || $page > $totalPages) {
+            // Redirige vers la dernière page
+            return $this->redirectToRoute('cars_index', ['page' => $totalPages]);
+        }
+    
         return $this->render('car/index.html.twig', [
-            'pagination' => $pagination //on renvoie les éléments à paginer
+            'pagination' => $pagination
         ]);
-        
     }
     
     /**
