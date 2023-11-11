@@ -427,6 +427,12 @@ background-color: $red !important;
             color: $red;
             position: relative;
             z-index: 7;
+                    
+            @media all and (max-width: 992px){
+             font-size: 36px;
+
+            } 
+     
             // &:nth-child(1){
             //     z-index: 1;
             // }
@@ -489,6 +495,7 @@ background-color: $red !important;
     height: 400px;
     @media all and (max-width: 992px){
       object-fit: contain;
+      
        
       } 
   }
