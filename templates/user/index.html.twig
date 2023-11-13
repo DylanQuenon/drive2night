@@ -51,19 +51,7 @@
         <div class="mt-4">
             <h2>Comments</h2>
             {% for comment in user.comments %}
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Said about {{ comment.car.brand }} {{ comment.car.model }}:</h5>
-                        <p class="card-text">{{ comment.content | raw | nl2br }}</p>
-                        <p><strong>Given Rating:</strong></p>
-                        {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
-                    </div>
-                    <div class="card-footer text-muted d-flex justify-content-between">
-                        {% if user is same as(app.user) %}
-                            <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger" data-method="POST">Delete comment</a>
-                        {% endif %}
-                    </div>
-                </div>
+               {% include "/partials/_comment.html.twig" %}
             {% endfor %}
         </div>
     </div>

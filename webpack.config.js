@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('car', './assets/js/car.js')
+    .addEntry('home', './assets/js/home.js')
 
 
 

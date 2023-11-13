@@ -1,0 +1,24 @@
+ <div class="bg-light mb-4 p-3">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+                <a href="{{ path('user_show', {'slug': comment.author.slug}) }}" class="text-decoration-none">
+                    {% if comment.author.picture %}
+                        <img src="/uploads/{{ comment.author.picture }}" alt="Avatar de {{ comment.author.fullName }}" class="rounded-circle mx-" style="width: 40px; height: 40px; object-fit: cover; text-decoration:none;">
+                    {% else %}
+                        <img src="/uploads/user.webp" alt="Avatar de {{ comment.author.fullName }}" class="rounded-circle " style="width: 40px; height: 40px; object-fit: cover; text-decoration:none;">
+                    {% endif %}
+                    {{ comment.author.fullName }}
+                </a>
+            </div>
+            <div>
+                <strong class="text-black"><small>{{ comment.createAt|date('Y-m-d H:i') }}</small></strong>
+            </div>
+        </div>
+        <strong>Said:</strong>
+        <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
+        <strong>Note donnée :</strong>
+        {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
+        {% if app.user and (comment.author == app.user or is_granted('ROLE_ADMIN')) %}
+            <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger m-2">Delete comment</a>
+        {% endif %}
+    </div>

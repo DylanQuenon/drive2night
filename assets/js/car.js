@@ -33,5 +33,3 @@ const handleDeleteButtons = () => {
 
 updateCounter()
 handleDeleteButtons()
-
-//bandeau qui défile au scroll sur la page home
