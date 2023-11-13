@@ -488,7 +488,9 @@ background-color: $red !important;
     height: 100%;
     object-fit: contain !important;
   }
-
+  .card-car{
+    height: 475px !important;
+  }
   .img_carouss{
     height: 400px;
     @media all and (max-width: 992px){
