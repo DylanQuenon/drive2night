@@ -14,7 +14,7 @@
                 <strong class="text-black"><small>{{ comment.createAt|date('Y-m-d H:i') }}</small></strong>
             </div>
         </div>
-        <strong>Said:</strong>
+     
         <blockquote>{{ comment.content | raw | nl2br }}</blockquote>
         <strong>Note donnée :</strong>
         {% include "partials/rating.html.twig" with {'rating': comment.rating} %}
