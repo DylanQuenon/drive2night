@@ -8,7 +8,7 @@
     <h2>All cars</h2>
     <div class="row">
         {% for car in pagination.data %} {# recup les datas de la pagination#}
-            {% include "/car/partials/cards.html.twig" %} {# Externalisation du code pour afficher les cartes pour limiter les répétitions#}
+            {% include "/car/_cards.html.twig" %} {# Externalisation du code pour afficher les cartes pour limiter les répétitions#}
         {% endfor %}
         <div class="pagination">
             {{ pagination.display() }} {# Appelle le display de la pagination (configuré dans service yaml)#}

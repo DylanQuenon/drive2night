@@ -36,7 +36,7 @@
             {% for car in user.cars %}
                 <div class="row">
                     <div class="col">
-                        {% include "/car/partials/cards.html.twig" %}
+                          {% include "/car/_cards.html.twig" %} 
                     </div>
                     {% if user is same as(app.user) %}
                         <div class="d-flex">
@@ -51,7 +51,7 @@
         <div class="mt-4">
             <h2>Comments</h2>
             {% for comment in user.comments %}
-               {% include "/partials/_comment.html.twig" %}
+               {% include "/user/_comment.html.twig" %}
             {% endfor %}
         </div>
     </div>

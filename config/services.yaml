@@ -28,4 +28,4 @@ services:
     # définit le template de la pagination
     App\Service\PaginationService:
         arguments:
-            $templatePath: 'car/partials/_pagination.html.twig' 
+            $templatePath: '/partials/_pagination.html.twig' 
