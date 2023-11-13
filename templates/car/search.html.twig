@@ -16,16 +16,13 @@
         </form>
         
         {% if query is not empty %} {# Si la requête n'est pas vide, afficher les résultats #}
-          
-                {% set carsCount = results|length %} {# Compter le nombre de résultats #}
-                <h2>Car ({{ carsCount }} result{{ carsCount > 1 ? 's' : '' }})</h2> {#Si résultat est supérieur à un on ajoute s à résultat sinon on laisse comme ca
-            #}
+            {% set carsCount = results|length %} {# Compter le nombre de résultats #}
+                <h2>Car ({{ carsCount }} result{{ carsCount > 1 ? 's' : '' }})</h2> {#Si résultat est supérieur à un on ajoute s à résultat sinon on laisse comme ca #}
                 {% for car in results %}
                     {% include "/car/_cards.html.twig" %}
                 {% endfor %}
          
-            
-            {% if carsCount == 0 %} {# Si aucun résultat n'est trouvé, afficher "Aucun résultat trouvé" #}
+            {% if carsCount == 0 %} {# Si aucun résultat n'est trouvé, afficher "No results" #}
                 <p>No results found</p>
             {% endif %}
         {% endif %}

@@ -15,7 +15,7 @@
             {% endif %}
         </h1>
 
-        {% if user is same as(app.user) %}
+        {% if user is same as(app.user) %} 
             <a href="{{ path('account_profile') }}" class="btn btn-primary me-2 mb-2">Edit my information</a>
             <a href="{{ path('account_password') }}" class="btn btn-warning me-2 mb-2">Change my password</a>
             <a href="{{ path('account_modifimg') }}" class="btn btn-success me-2 mb-2">Change my avatar</a>

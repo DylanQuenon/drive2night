@@ -45,10 +45,6 @@ class AccountController extends AbstractController
             // l'erreur est due à la limitation de tentative de connexion
             $loginError = "Trop de tentatives de connexion. Réessayez plus tard";
         }
-
-
-
-
         return $this->render('account/index.html.twig', [
             
             'hasError' => $error !== null,
@@ -64,7 +60,6 @@ class AccountController extends AbstractController
     #[Route("/logout", name: "account_logout")]
     public function logout(): void
     {
-
     }
      /**
      * Permet d'afficher le formulaire d'inscription ainsi la gestion de l'inscription de l'utilisateur

@@ -1,24 +1,24 @@
 {% extends "base.html.twig" %}
 
 
-{% block title %}Add a car{% endblock %}
+{% block title %}Add a car
+{% endblock %}
 
 {# {% form_theme myForm _self %} #}
 {% form_theme myForm 'car/_collection.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Add a new car</h1>
+	<div class="container">
+		<h1>Add a new car</h1>
 
-        {{ form_start(myForm) }}
-            {{form_widget(myForm)}}
-            <button type="submit" class="btn btn-primary mt-3">Add a new car</button>
-        {{ form_end(myForm) }}
-    </div>
+		{{ form_start(myForm) }}
+		{{form_widget(myForm)}}
+		<button type="submit" class="btn btn-primary mt-3">Add a new car</button>
+		{{ form_end(myForm) }}
+	</div>
 {% endblock %}
 
 
-
 {% block javascripts %}
- {{encore_entry_script_tags('car')}}
+	{{encore_entry_script_tags('car')}}
 {% endblock %}

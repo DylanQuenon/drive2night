@@ -1,14 +1,15 @@
 {% extends "base.html.twig" %}
 
-{% block title %}You do not have permission to access this resource{% endblock %}
+{% block title %}You do not have permission to access this resource
+{% endblock %}
 
 {% block body %}
-    <div class="container full">
-        <h1>Access Denied</h1>
-        <div class="alert alert-danger">
-            <p>You do not have permission to access this resource!</p>
-            <p>{{ exception.message }}</p>
-            <a href="{{ path('homepage') }}" class='btn btn-primary'>Back to Homepage</a>
-        </div>
-    </div>
+	<div class="container full">
+		<h1>Access Denied</h1>
+		<div class="alert alert-danger">
+			<p>You do not have permission to access this resource!</p>
+			<p>{{ exception.message }}</p>
+			<a href="{{ path('homepage') }}" class='btn btn-primary'>Back to Homepage</a>
+		</div>
+	</div>
 {% endblock %}

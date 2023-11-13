@@ -46,7 +46,7 @@ class CarController extends AbstractController
                 $image->setCar($car);
                 $manager->persist($image);
             }
-            $car->setAuthor($this->getUser());
+            $car->setAuthor($this->getUser()); //l'utilisateur connecté qui crée l'annonce sera l'auteur
 
             // je persiste mon objet Cars
             $manager->persist($car);
@@ -74,12 +74,12 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route("/cars/search", name: "cars_search")]
-    public function search(Request $request, CarsRepository $carsRepository): Response
+    public function search(Request $request, CarsRepository $cars): Response
     {
         $query = $request->query->get('q'); //récupère la recherche du repo
 
         if ($query) {
-            $results = $carsRepository->searchByKeyword($query);  //si il y'a une recherche tu recherches sinon tu laisses le tableau vide
+            $results = $cars->searchByKeyword($query);  //si il y'a une recherche tu recherches sinon tu laisses le tableau vide
         } else {
             $results = [];
           
@@ -100,7 +100,7 @@ class CarController extends AbstractController
     #[Route('/cars/brands', name: 'cars_brands_list')]
     public function brandList( CarsRepository $cars): Response
     {
-        $brands = $cars->findDistinctBrands(); 
+        $brands = $cars->findDistinctBrands(); //appelle la fonction pour select dans le repo une fois la marque
 
         return $this->render('car/brands_list.html.twig', [
             'brands' => $brands,
@@ -208,7 +208,7 @@ class CarController extends AbstractController
             $comment->setCar($car) //récupère la voiture commentée
                     ->setAuthor($this->getUser());//récupère l'auteur qui a commenté
     
-            // Persister le commentaire
+            // Persiste le commentaire
             $manager->persist($comment);
             $manager->flush();
     
@@ -217,7 +217,7 @@ class CarController extends AbstractController
                 "Your comment has been successfully recorded."
             );
     
-            // Rediriger vers la même page pour réinitialiser le formulaire
+            // Redirige vers la même page pour réinitialiser le formulaire
             return $this->redirectToRoute('cars_show', ['slug' => $car->getSlug()]);
         }
     
@@ -303,13 +303,13 @@ class CarController extends AbstractController
     {
         $this->addFlash(
             'success',
-            "The car <strong>".$car->getBrand().$car->getModel()."</strong> has been deleted."
+            "The car <strong>".$car->getFullCar()."</strong> has been deleted."
         );
 
         $manager->remove($car);
         $manager->flush();
 
-        return $this->redirectToRoute('cars_index');
+        return $this->redirectToRoute('account_index');
     }
     #[Route("/comment/{id}/delete", name: "comment_delete")]
     #[IsGranted(

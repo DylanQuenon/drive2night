@@ -4,9 +4,9 @@
 
 {% block body %}
     <div class="container mt-4">
-        {% if not cars|length %}
-            <h2>Il n'y a pas de voiture qui correspondent... </h2>
-            <a href="{{ path('cars_brands_list')}}" class="btn btn-danger text-white" style="color: blue;">Retour à la liste des marques</a>
+        {% if not cars|length %} {# si tu trouves pas affiche ce message#}
+            <h2>There are no cars that match... </h2>
+            <a href="{{ path('cars_brands_list')}}" class="btn btn-danger text-white">Back to brands list</a>
         {% else %}
             <h1>{{ brand }} cars</h1>
         
