@@ -21,43 +21,19 @@ class CarsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Cars::class);
     }
-    /**
-     * Permet de récupérer les dernières voitures enregistrées
-     *
-     * @param [type] $limit
-     * @return void
-     */
-    public function findLatestCars($limit) //associe à un paramètre à la fonction
-    {
-        return $this->createQueryBuilder('c') //permet d'écrire des requetes
-            ->orderBy('c.id', 'DESC') 
-            ->setMaxResults($limit)
-            ->getQuery()// Obtenir la requête construite
-            ->getResult();// Exécuter la requête et obtenir les résultats
-    }
+    
     /**
      * Fonction pour afficher toutes les marques
      *
      * @return void
      */
-    public function MarquesAutorisees()
+    public function findDistinctBrands()
     {
-        $qb = $this->createQueryBuilder('c')
-        ->orderBy('c.brand', 'ASC')
-        ->select('DISTINCT c.slugBrand,c.brand')
-        ->getQuery();
-
-        $results = $qb->getResult();
-
-        $marquesAutorisees = [];
-        foreach ($results as $result) {
-            $marquesAutorisees[] = [
-                'slugBrand' => $result['slugBrand'],
-                'brand' => $result['brand']
-            ];
-        }
-
-        return $marquesAutorisees;
+        return $this->createQueryBuilder('c')
+            ->select('DISTINCT c.slugBrand,c.brand')
+            ->orderby('c.brand',"asc")
+            ->getQuery()
+            ->getResult();
     }
     public function searchByKeyword(string $keyword)
     {

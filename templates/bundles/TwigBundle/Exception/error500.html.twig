@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Internal Server Error{% endblock %}
+
+{% block body %}
+    <div class="container full">
+        <h1>Internal Server Error</h1>
+        <div class="alert alert-danger">
+            <p>An internal server error has occurred. We apologize for the inconvenience.</p>
+            <p>Our technical team has been notified of this issue and is working to resolve it.</p>
+            <p>You can try refreshing the page or come back later.</p>
+            <p>If the problem persists, please contact technical support.</p>
+        </div>
+        <div class="mt-3">
+            <a href="{{ path('homepage') }}" class="btn btn-primary">Back to Homepage</a>
+            <button onclick="location.reload()" class="btn btn-warning">Refresh Page</button>
+        </div>
+    </div>
+{% endblock %}

@@ -21,7 +21,7 @@
                 <h2>Car ({{ carsCount }} result{{ carsCount > 1 ? 's' : '' }})</h2> {#Si résultat est supérieur à un on ajoute s à résultat sinon on laisse comme ca
             #}
                 {% for car in results %}
-                    {% include "/car/partials/cards.html.twig" %}
+                    {% include "/car/_cards.html.twig" %}
                 {% endfor %}
          
             

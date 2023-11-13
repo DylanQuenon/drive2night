@@ -1,15 +1,15 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Page non trouvée{% endblock %}
+{% block title %}Page not found{% endblock %}
 
 {% block body %}
     <div class="container full">
-        <h1>Page non trouvée</h1>
+        <h1>Page not found</h1>
         <div class="alert alert-danger">
-            <p>La page que vous recherchez n'existe pas!</p>
-            <p>On a surement du mal vous renseigner! Aucun soucis, vous pouvez retourner à l'accueil ou voir nos dernière annonces</p>
-            <a href="{{path('homepage')}}" class='btn btn-primary m-2'>Retour à l'accueil</a>
-            <a href="{{path('cars_index')}}" class='btn btn-success m-2'>Retour aux voitures</a>
+            <p>The page you are looking for does not exist!</p>
+            <p>We might have misguided you! No worries, you can go back to the homepage or check out our latest listings.</p>
+            <a href="{{ path('homepage') }}" class='btn btn-primary m-2'>Back to Homepage</a>
+            <a href="{{ path('cars_index') }}" class='btn btn-success m-2'>Back to Cars</a>
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

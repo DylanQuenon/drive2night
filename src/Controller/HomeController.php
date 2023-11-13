@@ -18,10 +18,11 @@ class HomeController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(CarsRepository $car): Response
     {
-        $cars = $car->findLatestCars(3); //trouve les 3 dernières voitures avec le paramètre limit
+        $latestCars = $car->findBy([], ['id' => 'DESC'], 3); // Trouve les 3 dernières voitures
+    
         return $this->render('home.html.twig', [
             'controller_name' => 'HomeController',
-            'cars'=>$cars//renvoie le tableau avec les dernières voitures
+            'cars' => $latestCars,
         ]);
     }
 }

@@ -94,13 +94,13 @@ class CarController extends AbstractController
     /**
      * Affiche toutes les marques 
      *
-     * @param CarsRepository $carsRepository
+     * @param CarsRepository $cars
      * @return Response
      */
     #[Route('/cars/brands', name: 'cars_brands_list')]
-    public function brandList( CarsRepository $carsRepository): Response
+    public function brandList( CarsRepository $cars): Response
     {
-        $brands = $carsRepository->MarquesAutorisees(); 
+        $brands = $cars->findDistinctBrands(); 
 
         return $this->render('car/brands_list.html.twig', [
             'brands' => $brands,
@@ -114,13 +114,13 @@ class CarController extends AbstractController
      * @return Response
      */
     #[Route('/cars/brands/{slugBrand}', name: 'cars_brand')]
-    public function brandCars(string $slugBrand, CarsRepository $carsRepository,): Response
+    public function brandCars(string $slugBrand, CarsRepository $cars,): Response
     {
         //remplace le string par des tirets pour obtenir le nom de la marque
         $brand = str_replace('-', ' ', $slugBrand);
         
         // Récupère les voitures associées au nom de la marque
-        $cars = $carsRepository->findBy(['brand' => $brand]); //permet de sélectionner les voitures à la marque 
+        $cars = $cars->findBy(['brand' => $brand]); //permet de sélectionner les voitures à la marque 
         
         return $this->render('car/brands.html.twig', [
             'brand' => $brand, //récupère la marque

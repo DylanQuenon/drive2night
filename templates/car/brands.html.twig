@@ -1,16 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{brand}}-Cars{% endblock %}
+{% block title %}{{ brand }}-Cars{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
-        <h1>{{brand}} cars</h1>
-    
-        <div class="row">
-            {% for car in cars %}
-               {% include "/car/partials/cards.html.twig" %}
-            {% endfor %}
-        </div>
-
+        {% if not cars|length %}
+            <h2>Il n'y a pas de voiture qui correspondent... </h2>
+            <a href="{{ path('cars_brands_list')}}" class="btn btn-danger text-white" style="color: blue;">Retour à la liste des marques</a>
+        {% else %}
+            <h1>{{ brand }} cars</h1>
+        
+            <div class="row">
+                {% for car in cars %}
+                    {% include "/car/_cards.html.twig" %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
